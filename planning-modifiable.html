@@ -1,0 +1,404 @@
+<title>UNIT — Semaine du 20 juillet (modifiable)</title>
+<style>
+  :root {
+    --ocean: #0f6b62;
+    --ocean-soft: #128075;
+    --coral: #ef6b4d;
+    --gold: #c9922e;
+    --sand: #f6f2ea;
+    --card: #fffdf8;
+    --ink: #17211f;
+    --muted: #5c6763;
+    --line: #e4ddce;
+    --shadow: 0 1px 2px rgba(23,33,31,.05), 0 8px 24px rgba(23,33,31,.06);
+    --bg: var(--sand);
+    --fg: var(--ink);
+    --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ocean: #2ba699; --ocean-soft: #38b6a7; --coral: #ff7d5e; --gold: #e0ad4f;
+      --sand: #0f1613; --card: #16201d; --ink: #ecefe9; --muted: #97a49e;
+      --line: #26332e; --bg: #0f1613; --fg: #ecefe9;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"] {
+    --ocean:#0f6b62; --ocean-soft:#128075; --coral:#ef6b4d; --gold:#c9922e; --sand:#f6f2ea;
+    --card:#fffdf8; --ink:#17211f; --muted:#5c6763; --line:#e4ddce; --bg:#f6f2ea; --fg:#17211f;
+    --shadow:0 1px 2px rgba(23,33,31,.05), 0 8px 24px rgba(23,33,31,.06);
+  }
+  :root[data-theme="dark"] {
+    --ocean:#2ba699; --ocean-soft:#38b6a7; --coral:#ff7d5e; --gold:#e0ad4f; --sand:#0f1613;
+    --card:#16201d; --ink:#ecefe9; --muted:#97a49e; --line:#26332e; --bg:#0f1613; --fg:#ecefe9;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--sans); line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: clamp(20px, 4vw, 56px) clamp(16px, 4vw, 40px) 64px; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ocean); font-weight: 700; margin: 0;
+  }
+
+  /* Toolbar */
+  .toolbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    background: color-mix(in srgb, var(--ocean) 92%, black); color: #fff;
+    padding: 10px clamp(16px, 4vw, 40px);
+    box-shadow: 0 2px 14px rgba(0,0,0,.18);
+  }
+  .toolbar .hint { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .toolbar .spacer { margin-left: auto; }
+  .toolbar button {
+    font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+    border: 1px solid rgba(255,255,255,.4); background: rgba(255,255,255,.12); color: #fff;
+    padding: 7px 14px; border-radius: 999px; transition: background .15s;
+  }
+  .toolbar button:hover { background: rgba(255,255,255,.24); }
+  .toolbar button.ghost { border-color: rgba(255,255,255,.25); }
+  .saved-flag { font-size: 12px; opacity: 0; transition: opacity .3s; font-weight: 600; }
+  .saved-flag.show { opacity: .9; }
+
+  /* Header */
+  header { margin-bottom: 40px; }
+  .brand { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .brand h1 {
+    font-size: clamp(30px, 6vw, 52px); font-weight: 800; letter-spacing: -.02em;
+    margin: 6px 0 0; text-wrap: balance;
+  }
+  .brand .sub { color: var(--muted); font-weight: 600; font-size: clamp(15px,2.4vw,19px); }
+
+  .goal {
+    margin: 22px 0 0; padding: 20px 24px; border-radius: 16px;
+    background: linear-gradient(135deg, var(--ocean), var(--ocean-soft));
+    color: #fff; box-shadow: var(--shadow);
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .goal .amount { font-family: var(--serif); font-size: clamp(26px,5vw,40px); font-weight: 700; line-height: 1; }
+  .goal .arrow { opacity: .7; font-size: 22px; }
+  .goal .dest { font-family: var(--serif); font-style: italic; font-size: clamp(20px,4vw,30px); }
+  .goal .palm { margin-left: auto; font-size: 30px; }
+
+  /* Meta grid: team + challenge */
+  .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  @media (max-width: 720px) { .meta { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 18px 20px; box-shadow: var(--shadow);
+  }
+  .panel h2 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 12px; color: var(--muted); font-weight: 700; }
+  .roles { display: flex; flex-direction: column; gap: 8px; }
+  .role { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding-bottom: 8px; border-bottom: 1px dashed var(--line); }
+  .role:last-child { border-bottom: 0; padding-bottom: 0; }
+  .role b { font-size: 16px; }
+  .role span { color: var(--muted); font-size: 14px; }
+  .role .wink { font-size: 12px; color: var(--ocean); font-weight: 600; margin-top: 2px; }
+
+  .rules { display: flex; flex-direction: column; gap: 10px; font-size: 14px; }
+  .rule-row { display: flex; gap: 10px; align-items: baseline; }
+  .tag { flex: 0 0 auto; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; }
+  .tag.ok { background: color-mix(in srgb, var(--ocean) 16%, transparent); color: var(--ocean); }
+  .tag.no { background: color-mix(in srgb, var(--coral) 18%, transparent); color: var(--coral); }
+  .tag.sport { background: color-mix(in srgb, var(--gold) 20%, transparent); color: var(--gold); }
+
+  /* Journée type */
+  .routine { margin-top: 24px; }
+  .routine-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 2px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .slot { background: var(--card); padding: 12px 14px; }
+  .slot .t { font-variant-numeric: tabular-nums; font-weight: 800; color: var(--ocean); font-size: 14px; }
+  .slot .l { font-size: 13px; color: var(--fg); margin-top: 2px; }
+
+  /* Days */
+  .days { margin-top: 36px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  @media (max-width: 760px) { .days { grid-template-columns: 1fr; } }
+  .day {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 18px 20px; box-shadow: var(--shadow); position: relative;
+    border-top: 3px solid var(--edge, var(--ocean));
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .day.deux { --edge: var(--ocean); }
+  .day.call { --edge: var(--coral); }
+  .day.fam  { --edge: var(--gold); }
+  .day-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .day-date { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  .day-name { font-size: 20px; font-weight: 800; letter-spacing: -.01em; margin: 2px 0 0; }
+  .badge { flex: 0 0 auto; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; color: #fff; }
+  .badge.deux { background: var(--ocean); }
+  .badge.call { background: var(--coral); }
+  .badge.fam  { background: var(--gold); }
+  .day-loc { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); font-weight: 600; }
+  .pill.gym { color: var(--ocean); border-color: color-mix(in srgb, var(--ocean) 40%, var(--line)); }
+  .day p { margin: 0; font-size: 14px; color: var(--fg); }
+  .day .highlight { font-size: 14px; font-weight: 700; color: var(--edge, var(--ocean)); display: flex; align-items: center; gap: 7px; margin-top: auto; padding-top: 8px; border-top: 1px dashed var(--line); }
+  .note { font-size: 13px; color: var(--muted); }
+
+  /* Editable affordance */
+  .edit { border-radius: 7px; transition: background .15s, box-shadow .15s; outline: none; cursor: text; }
+  .edit:hover { background: color-mix(in srgb, var(--gold) 14%, transparent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 18%, transparent); }
+  .edit:focus { background: color-mix(in srgb, var(--gold) 20%, transparent); box-shadow: 0 0 0 2px var(--gold); }
+  .edit:empty::before { content: "…"; opacity: .4; }
+
+  footer { margin-top: 40px; text-align: center; color: var(--muted); font-size: 13px; }
+  .legend { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; margin-bottom: 10px; }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; }
+  .dot { width: 10px; height: 10px; border-radius: 3px; }
+
+  @media print {
+    .toolbar { display: none !important; }
+    .edit:hover, .edit:focus { background: none; box-shadow: none; }
+    body { background: #fff; }
+  }
+</style>
+
+<div class="toolbar">
+  <span class="hint">✏️ Cliquez sur un texte pour le modifier</span>
+  <span class="saved-flag" id="savedFlag">✓ Enregistré</span>
+  <span class="spacer"></span>
+  <button id="printBtn" class="ghost">🖨 Imprimer / PDF</button>
+  <button id="resetBtn" class="ghost">↺ Réinitialiser</button>
+</div>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Unit · Planning hebdo</p>
+    <div class="brand">
+      <h1 class="edit" data-k="title">Semaine du 20 juillet</h1>
+      <span class="sub edit" data-k="sub">Théfari &amp; Artur</span>
+    </div>
+
+    <div class="goal">
+      <span class="amount">15 000 €</span>
+      <span class="note" style="color:rgba(255,255,255,.85);font-weight:600">à deux</span>
+      <span class="arrow">→</span>
+      <span class="dest">1 mois à Bali</span>
+      <span class="palm">🌴</span>
+    </div>
+
+    <div class="meta">
+      <div class="panel">
+        <h2>L'équipe — Win-win</h2>
+        <div class="roles">
+          <div class="role"><b>Artur</b><span>Acquisition</span></div>
+          <div class="role"><b>Théfari</b><span>Conversion</span></div>
+          <div class="role"><b>Sou</b><span>Delivery</span></div>
+        </div>
+        <p class="wink" style="margin-top:10px">Commission pour l'un et pour l'autre.</p>
+      </div>
+
+      <div class="panel">
+        <h2>Le défi — 1 mois sans sucre</h2>
+        <div class="rules">
+          <div class="rule-row"><span class="tag sport">Sport</span><span>Chaque séance est respectée 💪</span></div>
+          <div class="rule-row"><span class="tag ok">Autorisé</span><span>Protéines · pâtes · jus de gingembre · café sans sucre · fruits · miel dans la salade</span></div>
+          <div class="rule-row"><span class="tag no">Proscrit</span><span>Jus · glace · gâteaux</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="routine">
+    <p class="eyebrow" style="margin-bottom:10px">Journée type — jours de travail à deux</p>
+    <div class="routine-grid">
+      <div class="slot"><div class="t">6h30</div><div class="l">Réveil</div></div>
+      <div class="slot"><div class="t">7h00</div><div class="l">Salle de sport</div></div>
+      <div class="slot"><div class="t">8h30</div><div class="l">Petit-déj + douche</div></div>
+      <div class="slot"><div class="t">9h00</div><div class="l">Débriefing de la veille</div></div>
+      <div class="slot"><div class="t">10h00</div><div class="l">Cold Calls</div></div>
+      <div class="slot"><div class="t">12h30</div><div class="l">Déjeuner</div></div>
+      <div class="slot"><div class="t">13h00</div><div class="l">Relances</div></div>
+      <div class="slot"><div class="t">14h00</div><div class="l">Contenu agence + structure</div></div>
+      <div class="slot"><div class="t">18h00</div><div class="l">Dîner</div></div>
+      <div class="slot"><div class="t">19h–21h</div><div class="l">Formation Hamza</div></div>
+      <div class="slot"><div class="t">21h00</div><div class="l">Prog. du lendemain</div></div>
+      <div class="slot" style="background:color-mix(in srgb, var(--ocean) 8%, var(--card))"><div class="t" style="color:var(--gold)">Salle</div><div class="l">Chez Artur → Mons · sinon → Boussu</div></div>
+    </div>
+  </section>
+
+  <section class="days">
+    <!-- Lundi -->
+    <article class="day fam">
+      <div class="day-head">
+        <div>
+          <div class="day-date">Lundi 20/07</div>
+          <div class="day-name edit" data-k="d1-name">Chez Théfari</div>
+        </div>
+        <span class="badge fam">Démarrage</span>
+      </div>
+      <div class="day-loc">
+        <span class="pill gym">🏋 Boussu</span>
+        <span class="pill edit" data-k="d1-pill">Journée allégée</span>
+      </div>
+      <p class="edit" data-k="d1-prog"><b>9h</b> Artur — Branding · <span class="note">unit.partners/performance</span><br>
+      <b>12h</b> Lancement de la formation<br>
+      <b>12h30</b> Lunch + mise au point</p>
+      <div class="highlight"><span>🐒</span><span class="edit" data-k="d1-fam" style="flex:1">Aprèm famille — Jungle City</span></div>
+    </article>
+
+    <!-- Mardi -->
+    <article class="day deux">
+      <div class="day-head">
+        <div>
+          <div class="day-date">Mardi 21/07</div>
+          <div class="day-name edit" data-k="d2-name">Chez Artur</div>
+        </div>
+        <span class="badge deux">À deux</span>
+      </div>
+      <div class="day-loc">
+        <span class="pill gym">🏋 Mons</span>
+        <span class="pill edit" data-k="d2-pill">🍹 Spot : Terrasse</span>
+      </div>
+      <p class="edit" data-k="d2-prog">Journée type complète — cold calls, relances, contenu &amp; structure, formation Hamza.</p>
+      <div class="highlight"><span>📞</span><span class="edit" data-k="d2-fam" style="flex:1">Débrief → Prog. du lendemain</span></div>
+    </article>
+
+    <!-- Mercredi -->
+    <article class="day call">
+      <div class="day-head">
+        <div>
+          <div class="day-date">Mercredi 22/07</div>
+          <div class="day-name edit" data-k="d3-name">Chacun chez soi</div>
+        </div>
+        <span class="badge call">Call</span>
+      </div>
+      <div class="day-loc">
+        <span class="pill gym">🏋 Théf · Boussu</span>
+        <span class="pill gym">🏋 Artur · Mons</span>
+      </div>
+      <p class="edit" data-k="d3-prog">Journée type en visio : débrief, cold calls, relances, contenu, formation.</p>
+      <div class="highlight"><span>📞</span><span class="edit" data-k="d3-fam" style="flex:1">On bosse chacun de son côté, en call</span></div>
+    </article>
+
+    <!-- Jeudi -->
+    <article class="day deux">
+      <div class="day-head">
+        <div>
+          <div class="day-date">Jeudi 23/07</div>
+          <div class="day-name edit" data-k="d4-name">Chez Artur</div>
+        </div>
+        <span class="badge deux">À deux</span>
+      </div>
+      <div class="day-loc">
+        <span class="pill gym">🏋 Mons</span>
+        <span class="pill edit" data-k="d4-pill">⚓ Spot : Docks Tertre</span>
+      </div>
+      <p class="edit" data-k="d4-prog">Journée type complète — cold calls, relances, contenu &amp; structure, formation Hamza.</p>
+      <div class="highlight"><span>📞</span><span class="edit" data-k="d4-fam" style="flex:1">Débrief → Prog. du lendemain</span></div>
+    </article>
+
+    <!-- Vendredi -->
+    <article class="day fam">
+      <div class="day-head">
+        <div>
+          <div class="day-date">Vendredi 24/07</div>
+          <div class="day-name edit" data-k="d5-name">Voir spot</div>
+        </div>
+        <span class="badge fam">Aprèm libre</span>
+      </div>
+      <div class="day-loc">
+        <span class="pill gym">🏋 Boussu</span>
+        <span class="pill edit" data-k="d5-pill">📍 Mah / Vander Valk / Mer</span>
+      </div>
+      <p class="edit" data-k="d5-prog"><b>Matin</b> Débrief · Cold Calls + Relances jusqu'à midi.</p>
+      <div class="highlight"><span>🧡</span><span class="edit" data-k="d5-fam" style="flex:1">Après-midi libre — temps famille</span></div>
+    </article>
+
+    <!-- Samedi -->
+    <article class="day deux">
+      <div class="day-head">
+        <div>
+          <div class="day-date">Samedi 25/07</div>
+          <div class="day-name edit" data-k="d6-name">Chez Théfari</div>
+        </div>
+        <span class="badge deux">À deux</span>
+      </div>
+      <div class="day-loc">
+        <span class="pill gym">🏋 Boussu</span>
+      </div>
+      <p class="edit" data-k="d6-prog">Journée type — cold calls, relances, contenu &amp; structure.</p>
+      <div class="highlight"><span>🍽️</span><span class="edit" data-k="d6-fam" style="flex:1">Soir — Resto</span></div>
+    </article>
+
+    <!-- Dimanche -->
+    <article class="day call">
+      <div class="day-head">
+        <div>
+          <div class="day-date">Dimanche 26/07</div>
+          <div class="day-name edit" data-k="d7-name">Chacun chez soi</div>
+        </div>
+        <span class="badge call">Call</span>
+      </div>
+      <div class="day-loc">
+        <span class="pill gym">🏋 Théf · Boussu</span>
+        <span class="pill gym">🏋 Artur · Mons</span>
+      </div>
+      <p class="edit" data-k="d7-prog">Matinée type en call : débrief, cold calls, relances, contenu.</p>
+      <div class="highlight"><span>🧡</span><span class="edit" data-k="d7-fam" style="flex:1">Aprèm libre — sortie famille (Mer · Bruges · Anvers)</span></div>
+    </article>
+
+    <!-- Filler card: family note -->
+    <article class="day fam" style="justify-content:center;background:color-mix(in srgb, var(--gold) 8%, var(--card))">
+      <div class="day-name" style="font-size:17px">En congé, mais pas au ralenti</div>
+      <p class="note edit" data-k="famnote">On garde le rythme business <b>et</b> le temps en famille avec Naïla (20 mois). Les spots servent à changer de décor — ne pas toujours bosser au même endroit.</p>
+    </article>
+  </section>
+
+  <footer>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--ocean)"></span>À deux (présentiel)</span>
+      <span><span class="dot" style="background:var(--coral)"></span>Chacun chez soi (call)</span>
+      <span><span class="dot" style="background:var(--gold)"></span>Famille / temps libre</span>
+    </div>
+    Unit · Théfari &amp; Artur — cap sur Bali 🌴
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var KEY = 'unit-planning-semaine1';
+    var els = Array.prototype.slice.call(document.querySelectorAll('.edit'));
+    var flag = document.getElementById('savedFlag');
+    var flagTimer;
+
+    // Restore saved edits
+    try {
+      var saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+      els.forEach(function (el) {
+        var k = el.getAttribute('data-k');
+        if (saved[k] != null) el.innerHTML = saved[k];
+      });
+    } catch (e) {}
+
+    function save() {
+      var data = {};
+      els.forEach(function (el) { data[el.getAttribute('data-k')] = el.innerHTML; });
+      try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+      flag.classList.add('show');
+      clearTimeout(flagTimer);
+      flagTimer = setTimeout(function () { flag.classList.remove('show'); }, 1200);
+    }
+
+    els.forEach(function (el) {
+      el.setAttribute('contenteditable', 'true');
+      el.setAttribute('spellcheck', 'false');
+      el.addEventListener('input', save);
+    });
+
+    document.getElementById('printBtn').addEventListener('click', function () { window.print(); });
+    document.getElementById('resetBtn').addEventListener('click', function () {
+      if (confirm('Réinitialiser toutes vos modifications et revenir au planning de départ ?')) {
+        localStorage.removeItem(KEY);
+        location.reload();
+      }
+    });
+  })();
+</script>
