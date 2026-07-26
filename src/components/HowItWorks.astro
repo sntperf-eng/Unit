@@ -1,5 +1,4 @@
 ---
-import StepArt from './StepArt.astro';
 import Icon from './Icon.astro';
 import { steps, poseLevels, secret } from '../data/site';
 
@@ -23,13 +22,20 @@ const swatch = ['#d8b9a8', '#b07a5f', '#7c4a38'];
     <div class="ucards">
       {cardSteps.map((step, i) => (
         <article class="ucard" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
-          <span class="ucard__art"><StepArt n={step.art} /></span>
-          <span class="ucard__label">
-            <Icon name={step.icon} size={15} />
-            Étape {step.n} · {step.phase}
+          <span class="ucard__photo">
+            <img src={step.photo} width="564" height="316" alt={step.title} loading="lazy" decoding="async" />
           </span>
-          <h3 class="ucard__title">{step.title}</h3>
-          <p class="ucard__text">{step.text}</p>
+          <div class="ucard__body">
+            <span class="ucard__label">
+              <Icon name={step.icon} size={14} />
+              Étape {step.n} · {step.phase}
+            </span>
+            <h3 class="ucard__title">{step.title}</h3>
+            <p class="ucard__text">{step.text}</p>
+            {step.tip && (
+              <p class="ucard__tip"><Icon name="sparkle" size={13} /> {step.tip}</p>
+            )}
+          </div>
         </article>
       ))}
     </div>
@@ -61,7 +67,9 @@ const swatch = ['#d8b9a8', '#b07a5f', '#7c4a38'];
 
     <!-- Étape 6 — révélation -->
     <article class="reveal-step" data-reveal>
-      <span class="reveal-step__art"><StepArt n={revealStep.art} /></span>
+      <span class="reveal-step__photo">
+        <img src={revealStep.photo} width="580" height="356" alt="Avant / après : la couleur révélée sur l'ongle" loading="lazy" decoding="async" />
+      </span>
       <div class="reveal-step__body">
         <span class="ucard__label">
           <Icon name={revealStep.icon} size={15} />
@@ -80,6 +88,22 @@ const swatch = ['#d8b9a8', '#b07a5f', '#7c4a38'];
         <p class="secret__text">{secret.text}</p>
       </div>
     </div>
+
+    <!-- Guide inclus dans le coffret -->
+    <article class="guide" data-reveal>
+      <div class="guide__media">
+        <img src="/guide.webp" width="900" height="1350" alt="Le guide illustré du rituel NAYRA, inclus dans chaque coffret" loading="lazy" decoding="async" />
+      </div>
+      <div class="guide__body">
+        <span class="ucard__label"><Icon name="book" size={14} /> Inclus dans le coffret</span>
+        <h3 class="guide__title">Un guide illustré, glissé dans chaque boîte.</h3>
+        <p class="guide__text">
+          Chaque rituel est détaillé pas à pas sur une belle carte imprimée —
+          avec un QR code vers le tutoriel vidéo et tous nos conseils
+          d'application. Pour ne jamais hésiter, même la première fois.
+        </p>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -105,13 +129,10 @@ const swatch = ['#d8b9a8', '#b07a5f', '#7c4a38'];
   .ucard {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.5rem;
-    padding: var(--space-md) var(--space-sm) var(--space-md);
     background: var(--ivory);
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
+    overflow: hidden;
     transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease),
       border-color 0.5s var(--ease);
   }
@@ -120,14 +141,39 @@ const swatch = ['#d8b9a8', '#b07a5f', '#7c4a38'];
     box-shadow: var(--shadow-soft);
     border-color: var(--sand);
   }
-  .ucard__art {
+  .ucard__photo {
     display: block;
-    width: clamp(88px, 8vw, 108px);
-    margin-bottom: 0.35rem;
-    transition: transform 0.6s var(--ease);
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--cream);
   }
-  .ucard:hover .ucard__art {
-    transform: translateY(-4px);
+  .ucard__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1s var(--ease);
+  }
+  .ucard:hover .ucard__photo img {
+    transform: scale(1.06);
+  }
+  .ucard__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: var(--space-md) var(--space-sm);
+  }
+  .ucard__tip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    margin-top: 0.2rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--gold);
+  }
+  .ucard__tip svg {
+    flex: none;
   }
   .ucard__label {
     display: inline-flex;
@@ -251,9 +297,23 @@ const swatch = ['#d8b9a8', '#b07a5f', '#7c4a38'];
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-soft);
   }
-  .reveal-step__art {
+  .reveal-step__photo {
     flex: none;
-    width: clamp(96px, 12vw, 132px);
+    align-self: stretch;
+    display: flex;
+    width: clamp(200px, 30vw, 320px);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .reveal-step__photo img {
+    width: 100%;
+    height: 100%;
+    min-height: 170px;
+    object-fit: cover;
+    transition: transform 1s var(--ease);
+  }
+  .reveal-step:hover .reveal-step__photo img {
+    transform: scale(1.05);
   }
   .reveal-step__title {
     font-size: var(--step-2);
@@ -303,6 +363,40 @@ const swatch = ['#d8b9a8', '#b07a5f', '#7c4a38'];
     max-width: 62ch;
   }
 
+  /* Guide inclus */
+  .guide {
+    display: grid;
+    grid-template-columns: minmax(200px, 280px) 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    margin-top: var(--space-md);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    background: var(--ivory);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+  .guide__media {
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-lift);
+  }
+  .guide__media img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .guide__title {
+    font-size: var(--step-2);
+    font-weight: 400;
+    margin: 0.4rem 0 0.6rem;
+  }
+  .guide__text {
+    font-size: var(--step-0);
+    line-height: 1.65;
+    color: var(--stone);
+    max-width: 52ch;
+  }
+
   @media (max-width: 900px) {
     .ucards {
       grid-template-columns: repeat(2, 1fr);
@@ -317,6 +411,9 @@ const swatch = ['#d8b9a8', '#b07a5f', '#7c4a38'];
       flex-direction: column;
       text-align: center;
     }
+    .reveal-step__photo {
+      width: 100%;
+    }
     .reveal-step__text {
       margin-inline: auto;
     }
@@ -326,6 +423,17 @@ const swatch = ['#d8b9a8', '#b07a5f', '#7c4a38'];
       text-align: center;
     }
     .secret__text {
+      margin-inline: auto;
+    }
+    .guide {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .guide__media {
+      max-width: 260px;
+      margin-inline: auto;
+    }
+    .guide__text {
       margin-inline: auto;
     }
   }

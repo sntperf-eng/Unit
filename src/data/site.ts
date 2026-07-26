@@ -148,8 +148,10 @@ export type Step = {
   phase: string;
   title: string;
   text: string;
+  tip?: string;
   icon: string;
   art: number;
+  photo?: string;
 };
 
 export const steps: Step[] = [
@@ -157,33 +159,38 @@ export const steps: Step[] = [
     n: '01',
     phase: 'Préparez',
     title: 'Préparez vos ongles',
-    text: 'Limez, polissez, repoussez les cuticules et nettoyez soigneusement vos ongles avant toute application.',
+    text: 'Limez vos ongles, utilisez le buffer pour lisser leur surface, repoussez délicatement les cuticules puis nettoyez soigneusement.',
     icon: 'file',
     art: 1,
+    photo: '/step-1.webp',
   },
   {
     n: '02',
     phase: 'Mélangez',
     title: 'Préparez votre henné',
-    text: "Versez la poudre dans le bol puis ajoutez progressivement quelques gouttes d'eau jusqu'à obtenir une pâte lisse et homogène.",
+    text: "Versez la poudre de henné dans le bol. Ajoutez progressivement quelques gouttes d'eau jusqu'à obtenir une pâte lisse et homogène.",
+    tip: 'Texture idéale : une crème épaisse.',
     icon: 'bowl',
     art: 2,
+    photo: '/step-2.webp',
   },
   {
     n: '03',
     phase: 'Protégez',
     title: 'Protégez les contours',
-    text: 'Appliquez les stickers autour des ongles pour un résultat net et précis.',
+    text: "Placez les stickers autour des ongles afin de protéger les contours et d'obtenir une application nette.",
     icon: 'sticker',
     art: 3,
+    photo: '/step-3.webp',
   },
   {
     n: '04',
     phase: 'Appliquez',
     title: 'Appliquez le henné',
-    text: 'Recouvrez uniformément chaque ongle avec une fine couche de henné.',
+    text: 'Appliquez une couche uniforme de henné sur chaque ongle. Veillez à recouvrir toute la surface.',
     icon: 'brush',
     art: 4,
+    photo: '/step-4.webp',
   },
   {
     n: '05',
@@ -197,9 +204,10 @@ export const steps: Step[] = [
     n: '06',
     phase: 'Révélez',
     title: 'Découvrez votre couleur',
-    text: 'Retirez délicatement le henné sec. La couleur continuera de se développer naturellement pendant les 24 à 48 heures suivantes.',
+    text: "Retirez délicatement le henné sec. La couleur continuera de se développer pendant les 24 à 48 heures suivantes. Terminez votre rituel en appliquant quelques gouttes d'huile à cuticules.",
     icon: 'sparkle',
     art: 6,
+    photo: '/step-6.webp',
   },
 ];
 
