@@ -222,19 +222,19 @@ export const testimonials: Testimonial[] = [
   {
     quote:
       "Une couleur d'une élégance folle, et surtout ce sentiment d'utiliser enfin un produit qui me ressemble.",
-    author: 'Camille Laurent',
+    author: 'Yasmine Benali',
     detail: 'Cliente vérifiée',
   },
   {
     quote:
       "Le kit est complet et magnifiquement pensé. Le geste est devenu mon petit rituel du dimanche.",
-    author: 'Inès Benali',
+    author: 'Nour El Amrani',
     detail: 'Cliente vérifiée',
   },
   {
     quote:
       'Une teinte naturelle qui tient et un packaging à la hauteur des plus grandes maisons.',
-    author: 'Sarah Moreau',
+    author: 'Salma Haddad',
     detail: 'Cliente vérifiée',
   },
 ];
