@@ -35,6 +35,8 @@ import { kitItems } from '../data/site';
         alt="L'ensemble du kit NAYRA : henné, huile cuticules, bol en silicone, pochette, guide, lime, buffer, repousse-cuticules, brossette, séparateur d'orteils et stickers."
         loading="lazy"
         decoding="async"
+        data-parallax
+        data-parallax-speed="0.04"
       />
     </figure>
 
@@ -124,19 +126,21 @@ import { kitItems } from '../data/site';
 
   /* Grande photo du kit */
   .kit__showcase {
+    position: relative;
+    aspect-ratio: 1000 / 601;
     margin: 0 0 var(--space-xl);
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-lift);
   }
   .kit__showcase img {
+    position: absolute;
+    inset: -12% 0;
     width: 100%;
-    height: auto;
+    height: 124%;
+    object-fit: cover;
     display: block;
-    transition: transform 1.2s var(--ease);
-  }
-  .kit__showcase:hover img {
-    transform: scale(1.02);
+    will-change: transform;
   }
 
   /* Grille des 12 éléments */

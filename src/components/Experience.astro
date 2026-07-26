@@ -19,6 +19,8 @@ const points = [
         alt="Le kit NAYRA présenté dans son coffret : chaque élément disposé avec soin sur un lit de frisure kraft."
         loading="lazy"
         decoding="async"
+        data-parallax
+        data-parallax-speed="0.04"
       />
     </figure>
 
@@ -56,19 +58,21 @@ const points = [
     gap: var(--space-xl);
   }
   .xp__media {
+    position: relative;
+    aspect-ratio: 1010 / 544;
     margin: 0;
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-lift);
   }
   .xp__media img {
+    position: absolute;
+    inset: -12% 0;
     width: 100%;
-    height: auto;
+    height: 124%;
+    object-fit: cover;
     display: block;
-    transition: transform 1.2s var(--ease);
-  }
-  .xp__media:hover img {
-    transform: scale(1.03);
+    will-change: transform;
   }
   .xp__content .lead {
     margin-top: var(--space-sm);

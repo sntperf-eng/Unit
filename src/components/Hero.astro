@@ -5,6 +5,7 @@ import Icon from './Icon.astro';
 
 <section class="hero" id="top">
   <div class="hero__bg" data-parallax data-parallax-speed="0.08" aria-hidden="true"></div>
+  <canvas class="hero__particles" data-particles aria-hidden="true"></canvas>
 
   <div class="hero__inner container">
     <p class="hero__eyebrow" data-reveal>Coloration des ongles au henné</p>
@@ -58,7 +59,17 @@ import Icon from './Icon.astro';
       linear-gradient(180deg, var(--beige-logo) 0%, transparent 20%),
       radial-gradient(58% 56% at 50% 44%, #e8d8cb 0%, #efe6d7 48%, var(--ivory) 100%);
   }
+  .hero__particles {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
   .hero__inner {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -122,6 +133,7 @@ import Icon from './Icon.astro';
     left: 50%;
     bottom: clamp(1.5rem, 4vh, 2.5rem);
     transform: translateX(-50%);
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -160,3 +172,59 @@ import Icon from './Icon.astro';
     .hero__logo { width: 88vw; }
   }
 </style>
+
+<script>
+  // Poussière d'or flottante — ambiance cinématographique douce (canvas léger).
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-particles]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (canvas && !reduce) {
+    const ctx = canvas.getContext('2d')!;
+    let w = 0, h = 0, dpr = 1, dots: any[] = [], raf = 0, running = false;
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const r = canvas.getBoundingClientRect();
+      w = canvas.width = Math.max(1, Math.round(r.width * dpr));
+      h = canvas.height = Math.max(1, Math.round(r.height * dpr));
+      const target = Math.round((r.width * r.height) / 22000);
+      const n = Math.max(16, Math.min(44, target));
+      dots = Array.from({ length: n }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: (Math.random() * 1.5 + 0.5) * dpr,
+        vy: -(Math.random() * 0.22 + 0.04) * dpr,
+        vx: (Math.random() - 0.5) * 0.14 * dpr,
+        a: Math.random() * 0.45 + 0.18,
+        tw: Math.random() * Math.PI * 2,
+      }));
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, w, h);
+      ctx.shadowColor = 'rgba(201,164,139,0.9)';
+      for (const p of dots) {
+        p.y += p.vy; p.x += p.vx; p.tw += 0.02;
+        if (p.y < -12) { p.y = h + 12; p.x = Math.random() * w; }
+        if (p.x < -12) p.x = w + 12; else if (p.x > w + 12) p.x = -12;
+        const a = p.a * (0.55 + 0.45 * Math.sin(p.tw));
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 6.283);
+        ctx.fillStyle = `rgba(201,164,139,${a})`;
+        ctx.shadowBlur = 5 * dpr;
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(draw);
+    };
+
+    const start = () => { if (!running) { running = true; draw(); } };
+    const stop = () => { running = false; cancelAnimationFrame(raf); };
+
+    resize();
+    start();
+    window.addEventListener('resize', resize, { passive: true });
+    new IntersectionObserver(
+      (e) => (e[0].isIntersecting ? start() : stop()),
+      { threshold: 0 }
+    ).observe(canvas);
+  }
+</script>

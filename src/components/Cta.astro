@@ -38,9 +38,32 @@ import Icon from './Icon.astro';
     position: absolute;
     inset: 0;
     z-index: -1;
+    overflow: hidden;
     background:
       radial-gradient(70% 110% at 50% 0%, #ecdcc9 0%, transparent 60%),
       linear-gradient(180deg, var(--warm-beige) 0%, var(--cream) 100%);
+  }
+  /* Voile d'or en lente rotation — reflet liquide discret */
+  .cta__bg::before {
+    content: '';
+    position: absolute;
+    inset: -60%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(201, 164, 139, 0.16) 60deg,
+      transparent 140deg,
+      rgba(211, 182, 134, 0.14) 220deg,
+      transparent 320deg
+    );
+    filter: blur(40px);
+    animation: nayra-rotate 24s linear infinite;
+  }
+  @keyframes nayra-rotate {
+    to { transform: rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cta__bg::before { animation: none; }
   }
   .cta__inner {
     max-width: 40rem;
