@@ -321,6 +321,27 @@ ul {
   transform: none;
 }
 
+/* Révélation « dévoilement » pour les images — léger zoom + fondu */
+[data-reveal].img-reveal {
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 1.1s var(--ease), transform 1.3s var(--ease);
+}
+[data-reveal].img-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Léger flottement continu (respecte prefers-reduced-motion via la règle globale) */
+@keyframes nayra-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+@keyframes nayra-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

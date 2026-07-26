@@ -22,12 +22,12 @@ import { kitItems } from '../data/site';
       </div>
 
       <div class="kit__count" data-reveal aria-hidden="true">
-        <span class="kit__count-num">12</span>
+        <span class="kit__count-num" data-count="12">12</span>
         <span class="kit__count-label">éléments</span>
       </div>
     </div>
 
-    <figure class="kit__showcase" data-reveal>
+    <figure class="kit__showcase img-reveal" data-reveal>
       <img
         src="/kit-flat.webp"
         width="1000"
@@ -55,6 +55,33 @@ import { kitItems } from '../data/site';
     </ul>
   </div>
 </section>
+
+<script>
+  // Compteur animé « 12 éléments » — se déclenche à l'apparition.
+  const el = document.querySelector<HTMLElement>('[data-count]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (el && !reduce && 'IntersectionObserver' in window) {
+    const target = parseInt(el.dataset.count || '0', 10);
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        obs.disconnect();
+        const duration = 1100;
+        const start = performance.now();
+        const tick = (now: number) => {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = String(Math.round(eased * target));
+          if (p < 1) requestAnimationFrame(tick);
+          else el.textContent = String(target);
+        };
+        el.textContent = '0';
+        requestAnimationFrame(tick);
+      });
+    }, { threshold: 0.6 });
+    io.observe(el);
+  }
+</script>
 
 <style>
   .kit {
