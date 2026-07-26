@@ -1,11 +1,11 @@
 ---
 /**
- * StepArt — illustration du rituel, une par étape.
+ * StepArt — illustration du rituel, une par étape (6 au total).
  * Dessins linéaires or/henné sur fond beige, dans l'esprit du logo.
  * (Illustrations sur mesure ; remplaçables par de vraies photos plus tard.)
  */
 interface Props {
-  n: 1 | 2 | 3 | 4;
+  n: number;
 }
 const { n } = Astro.props;
 
@@ -14,6 +14,9 @@ const henne = '#7c4a38';
 const light = '#e7d4bc';
 const sand = '#e6cdae';
 const finger = '#f6ecdf';
+const powder = '#9a8f66';
+const water = '#a7bfca';
+const sticker = '#e9cfc9';
 const cid = `stepclip-${n}`;
 ---
 
@@ -28,64 +31,92 @@ const cid = `stepclip-${n}`;
   <g clip-path={`url(#${cid})`}>
     {n === 1 && (
       <g>
-        {/* Lime posée en diagonale, derrière le doigt */}
-        <line x1="32" y1="128" x2="118" y2="70" stroke={light} stroke-width="12" stroke-linecap="round" />
-        <line x1="32" y1="128" x2="118" y2="70" stroke={gold} stroke-width="1.3" stroke-linecap="round" opacity="0.4" />
+        {/* Lime en diagonale + buffer, derrière le doigt */}
+        <line x1="30" y1="126" x2="116" y2="70" stroke={light} stroke-width="11" stroke-linecap="round" />
+        <line x1="30" y1="126" x2="116" y2="70" stroke={gold} stroke-width="1.2" stroke-linecap="round" opacity="0.4" />
+        <rect x="104" y="104" width="30" height="20" rx="4" fill="#fbf6ee" stroke={gold} stroke-width="2" transform="rotate(-18 119 114)" />
         {/* Doigt + ongle préparé */}
-        <path d="M66 152 L66 88 C66 68 71 55 80 55 C89 55 94 68 94 88 L94 152Z" fill={finger} stroke={gold} stroke-width="2.4" stroke-linejoin="round" />
-        <ellipse cx="80" cy="74" rx="10" ry="13" fill="#fff" stroke={gold} stroke-width="2" />
-        <path d="M71 86 Q80 82 89 86" fill="none" stroke={gold} stroke-width="1.8" stroke-linecap="round" />
+        <path d="M62 152 L62 88 C62 68 67 55 76 55 C85 55 90 68 90 88 L90 152Z" fill={finger} stroke={gold} stroke-width="2.4" stroke-linejoin="round" />
+        <ellipse cx="76" cy="74" rx="10" ry="13" fill="#fff" stroke={gold} stroke-width="2" />
+        <path d="M67 86 Q76 82 85 86" fill="none" stroke={gold} stroke-width="1.8" stroke-linecap="round" />
       </g>
     )}
 
     {n === 2 && (
       <g>
-        {/* Doigt + ongle en cours d'application */}
-        <path d="M60 152 L60 88 C60 68 65 55 74 55 C83 55 88 68 88 88 L88 152Z" fill={finger} stroke={gold} stroke-width="2.4" stroke-linejoin="round" />
-        <ellipse cx="74" cy="74" rx="10" ry="13" fill="#fff" stroke={gold} stroke-width="2" />
-        {/* Trace de henné sur l'ongle */}
-        <path d="M65 78 Q74 74 83 78 Q82 88 74 89 Q66 88 65 78Z" fill={henne} />
-        {/* Pinceau */}
-        <line x1="132" y1="40" x2="94" y2="70" stroke={gold} stroke-width="3.2" stroke-linecap="round" />
-        <line x1="94" y1="70" x2="86" y2="76" stroke={gold} stroke-width="6" stroke-linecap="round" />
-        <path d="M86 76 L77 82 M89 73 L81 80 M83 79 L75 84" stroke={henne} stroke-width="1.6" stroke-linecap="round" />
-        {/* Goutte */}
-        <path d="M112 52 C112 56 108 58 108 61 A4 4 0 0 0 116 61 C116 58 112 56 112 52Z" fill={henne} opacity="0.85" />
+        {/* Gouttes d'eau */}
+        <path d="M70 40 C70 45 66 47 66 50 A4 4 0 0 0 74 50 C74 47 70 45 70 40Z" fill={water} opacity="0.85" />
+        <path d="M92 32 C92 36 89 38 89 40 A3 3 0 0 0 95 40 C95 38 92 36 92 32Z" fill={water} opacity="0.7" />
+        {/* Bol */}
+        <path d="M42 84 C42 106 59 120 80 120 C101 120 118 106 118 84" fill="#fbf6ee" stroke={gold} stroke-width="2.4" stroke-linejoin="round" />
+        {/* Poudre de henné dans le bol */}
+        <path d="M58 86 Q80 68 102 86 Z" fill={powder} />
+        <ellipse cx="80" cy="84" rx="38" ry="9" fill="#fbf6ee" stroke={gold} stroke-width="2.4" />
+        <path d="M60 84 Q80 74 100 84" fill={powder} opacity="0.9" stroke="none" />
       </g>
     )}
 
     {n === 3 && (
-      <g fill="none" stroke={gold} stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-        {/* Sablier */}
-        <line x1="52" y1="42" x2="108" y2="42" />
-        <line x1="52" y1="118" x2="108" y2="118" />
-        <path d="M57 42 C57 62 74 74 80 80 C86 74 103 62 103 42" />
-        <path d="M57 118 C57 98 74 86 80 80 C86 86 103 98 103 118" />
-        {/* Sable */}
-        <path d="M63 48 C67 60 76 69 80 72 C84 69 93 60 97 48Z" fill={sand} stroke="none" />
-        <path d="M68 112 Q80 100 92 112Z" fill={sand} stroke="none" />
-        <line x1="80" y1="82" x2="80" y2="102" stroke={gold} stroke-width="1.6" stroke-dasharray="1 5" />
-        {/* Petite brindille */}
-        <path d="M118 128 C118 118 122 114 128 112" stroke-width="1.6" opacity="0.7" />
-        <path d="M120 122 C116 121 114 118 114 114" stroke-width="1.6" opacity="0.7" />
+      <g>
+        {/* Doigt + ongle */}
+        <path d="M62 152 L62 88 C62 68 67 55 76 55 C85 55 90 68 90 88 L90 152Z" fill={finger} stroke={gold} stroke-width="2.4" stroke-linejoin="round" />
+        {/* Sticker de protection autour de l'ongle */}
+        <path d="M62 72 C56 78 56 94 64 100 C71 105 81 105 88 100 C96 94 96 78 90 72" fill="none" stroke={sticker} stroke-width="6" stroke-linecap="round" />
+        <ellipse cx="76" cy="74" rx="10" ry="13" fill="#fff" stroke={gold} stroke-width="2" />
+        <path d="M67 86 Q76 82 85 86" fill="none" stroke={gold} stroke-width="1.6" stroke-linecap="round" />
+        {/* Petite planche de stickers */}
+        <rect x="104" y="106" width="30" height="24" rx="3" fill="#fbf6ee" stroke={gold} stroke-width="1.8" transform="rotate(-14 119 118)" />
+        <g fill={sticker} transform="rotate(-14 119 118)"><circle cx="111" cy="113" r="2.4" /><circle cx="119" cy="113" r="2.4" /><circle cx="127" cy="113" r="2.4" /><circle cx="111" cy="122" r="2.4" /><circle cx="119" cy="122" r="2.4" /><circle cx="127" cy="122" r="2.4" /></g>
       </g>
     )}
 
     {n === 4 && (
       <g>
-        {/* Doigt + ongle coloré (résultat) */}
-        <path d="M66 152 L66 88 C66 68 71 55 80 55 C89 55 94 68 94 88 L94 152Z" fill={finger} stroke={gold} stroke-width="2.4" stroke-linejoin="round" />
-        <ellipse cx="80" cy="74" rx="10" ry="13" fill={henne} stroke={gold} stroke-width="2" />
-        <path d="M74 68 Q78 65 82 67" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.6" />
-        {/* Étincelles de révélation */}
-        <path d="M112 50 C113 56 114 57 120 58 C114 59 113 60 112 66 C111 60 110 59 104 58 C110 57 111 56 112 50Z" fill={gold} />
-        <circle cx="102" cy="40" r="2" fill={gold} />
-        <circle cx="122" cy="74" r="1.6" fill={gold} />
+        {/* Doigt + ongle en cours d'application */}
+        <path d="M56 152 L56 88 C56 68 61 55 70 55 C79 55 84 68 84 88 L84 152Z" fill={finger} stroke={gold} stroke-width="2.4" stroke-linejoin="round" />
+        <ellipse cx="70" cy="74" rx="10" ry="13" fill="#fff" stroke={gold} stroke-width="2" />
+        <path d="M61 78 Q70 74 79 78 Q78 88 70 89 Q62 88 61 78Z" fill={henne} />
+        {/* Pinceau */}
+        <line x1="132" y1="40" x2="90" y2="70" stroke={gold} stroke-width="3.2" stroke-linecap="round" />
+        <line x1="90" y1="70" x2="82" y2="76" stroke={gold} stroke-width="6" stroke-linecap="round" />
+        <path d="M82 76 L73 82 M85 73 L77 80 M79 79 L71 84" stroke={henne} stroke-width="1.6" stroke-linecap="round" />
+        <path d="M108 52 C108 56 104 58 104 61 A4 4 0 0 0 112 61 C112 58 108 56 108 52Z" fill={henne} opacity="0.85" />
+      </g>
+    )}
+
+    {n === 5 && (
+      <g>
+        {/* Lune + étoile (nuit) */}
+        <path d="M120 40 A11 11 0 1 1 107 27 A8.5 8.5 0 0 0 120 40Z" fill={sand} stroke={gold} stroke-width="1.6" stroke-linejoin="round" />
+        <path d="M44 40 l1.4 3.6 3.6 1.4-3.6 1.4L44 50l-1.4-3.6L39 45l3.6-1.4Z" fill={gold} />
+        {/* Sablier */}
+        <g fill="none" stroke={gold} stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="56" y1="60" x2="104" y2="60" />
+          <line x1="56" y1="124" x2="104" y2="124" />
+          <path d="M60 60 C60 78 75 88 80 92 C85 88 100 78 100 60" />
+          <path d="M60 124 C60 106 75 96 80 92 C85 96 100 106 100 124" />
+        </g>
+        <path d="M66 66 C69 76 76 83 80 86 C84 83 91 76 94 66Z" fill={sand} />
+        <path d="M70 118 Q80 108 90 118Z" fill={sand} />
+        <line x1="80" y1="93" x2="80" y2="110" stroke={gold} stroke-width="1.6" stroke-dasharray="1 5" />
+      </g>
+    )}
+
+    {n === 6 && (
+      <g>
+        {/* Doigt + ongle : moitié nature / moitié coloré (avant / après) */}
+        <path d="M62 152 L62 88 C62 68 67 55 76 55 C85 55 90 68 90 88 L90 152Z" fill={finger} stroke={gold} stroke-width="2.4" stroke-linejoin="round" />
+        <ellipse cx="76" cy="74" rx="10" ry="13" fill="#fff" stroke={gold} stroke-width="2" />
+        <path d="M76 61 A10 13 0 0 1 76 87 Z" fill={henne} />
+        <line x1="76" y1="60" x2="76" y2="88" stroke="#fff" stroke-width="1.4" stroke-dasharray="2 3" opacity="0.7" />
+        {/* Étincelles */}
+        <path d="M112 52 C113 58 114 59 120 60 C114 61 113 62 112 68 C111 62 110 61 104 60 C110 59 111 58 112 52Z" fill={gold} />
+        <circle cx="102" cy="42" r="2" fill={gold} />
+        <circle cx="120" cy="76" r="1.6" fill={gold} />
       </g>
     )}
   </g>
 
-  {/* Anneau fin */}
   <circle cx="80" cy="80" r="70" fill="none" stroke="#e4d0b5" stroke-width="1.5" />
 </svg>
 

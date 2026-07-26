@@ -1,33 +1,85 @@
 ---
 import StepArt from './StepArt.astro';
-import { steps } from '../data/site';
+import Icon from './Icon.astro';
+import { steps, poseLevels, secret } from '../data/site';
+
+const cardSteps = steps.slice(0, 4);
+const poseStep = steps[4];
+const revealStep = steps[5];
+const swatch = ['#d8b9a8', '#b07a5f', '#7c4a38'];
 ---
 
 <section class="ritual section" id="rituel">
   <div class="container">
     <div class="ritual__head" data-reveal>
       <p class="eyebrow">Le rituel</p>
-      <h2 class="section-title">Comment ça fonctionne</h2>
+      <h2 class="section-title">Comment utiliser NAYRA</h2>
       <p class="lead">
-        Quatre gestes simples, comme une parenthèse de douceur que l'on
-        s'accorde à soi-même.
+        Six gestes simples, guidés pas à pas. Laissez-vous porter par le rituel.
       </p>
     </div>
 
-    <ol class="ritual__steps">
-      <span class="ritual__line" aria-hidden="true"></span>
-      {steps.map((step, i) => (
-        <li class="step" data-reveal style={`--reveal-delay: ${i * 110}ms`}>
-          <span class="step__marker">
-            <span class="step__dot"></span>
+    <!-- Étapes 1 à 4 en cartes -->
+    <div class="ucards">
+      {cardSteps.map((step, i) => (
+        <article class="ucard" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+          <span class="ucard__art"><StepArt n={step.art} /></span>
+          <span class="ucard__label">
+            <Icon name={step.icon} size={15} />
+            Étape {step.n} · {step.phase}
           </span>
-          <span class="step__n">{step.n}</span>
-          <span class="step__art"><StepArt n={(i + 1) as 1 | 2 | 3 | 4} /></span>
-          <h3 class="step__title">{step.title}</h3>
-          <p class="step__text">{step.text}</p>
-        </li>
+          <h3 class="ucard__title">{step.title}</h3>
+          <p class="ucard__text">{step.text}</p>
+        </article>
       ))}
-    </ol>
+    </div>
+
+    <!-- Étape 5 — mise en valeur : temps de pose -->
+    <div class="pose" data-reveal>
+      <div class="pose__intro">
+        <span class="pose__label">
+          <Icon name="clock" size={16} /> Étape {poseStep.n} · {poseStep.phase}
+        </span>
+        <h3 class="pose__title">{poseStep.title}</h3>
+        <p class="pose__text">
+          {poseStep.text} Vous décidez de l'intensité de votre couleur.
+        </p>
+      </div>
+
+      <div class="pose__scale">
+        {poseLevels.map((lvl, i) => (
+          <div class="pose__tier">
+            <span class="pose__icon"><Icon name={lvl.icon} size={22} /></span>
+            <span class="pose__swatch" style={`background:${swatch[i]}`}></span>
+            <span class="pose__time">{lvl.time}</span>
+            <span class="pose__intensity">{lvl.label}</span>
+          </div>
+        ))}
+        <span class="pose__bar" aria-hidden="true"></span>
+      </div>
+    </div>
+
+    <!-- Étape 6 — révélation -->
+    <article class="reveal-step" data-reveal>
+      <span class="reveal-step__art"><StepArt n={revealStep.art} /></span>
+      <div class="reveal-step__body">
+        <span class="ucard__label">
+          <Icon name={revealStep.icon} size={15} />
+          Étape {revealStep.n} · {revealStep.phase}
+        </span>
+        <h3 class="reveal-step__title">{revealStep.title}</h3>
+        <p class="reveal-step__text">{revealStep.text}</p>
+      </div>
+    </article>
+
+    <!-- Encart secret -->
+    <div class="secret" data-reveal>
+      <span class="secret__icon"><Icon name="sparkle" size={26} /></span>
+      <div class="secret__body">
+        <h3 class="secret__title">{secret.title}</h3>
+        <p class="secret__text">{secret.text}</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -44,124 +96,242 @@ import { steps } from '../data/site';
     margin-top: var(--space-sm);
   }
 
-  .ritual__steps {
-    position: relative;
+  /* Cartes d'étapes */
+  .ucards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-md);
-    list-style: none;
-    padding-left: 0;
+    gap: clamp(0.75rem, 1.4vw, 1.15rem);
   }
-  /* Ligne de liaison horizontale */
-  .ritual__line {
-    position: absolute;
-    top: 5px;
-    left: 12.5%;
-    right: 12.5%;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      var(--sand) 12%,
-      var(--sand) 88%,
-      transparent
-    );
-  }
-  .step {
-    position: relative;
+  .ucard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    padding-top: var(--space-lg);
-  }
-  .step__marker {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    display: grid;
-    place-items: center;
-    width: 11px;
-    height: 11px;
-  }
-  .step__dot {
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
+    gap: 0.5rem;
+    padding: var(--space-md) var(--space-sm) var(--space-md);
     background: var(--ivory);
-    border: 1px solid var(--rose-gold);
-    position: relative;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease),
+      border-color 0.5s var(--ease);
   }
-  .step__dot::after {
-    content: '';
-    position: absolute;
-    inset: 3px;
-    border-radius: 50%;
-    background: var(--rose-gold);
-    transform: scale(0);
-    transition: transform 0.6s var(--ease) 0.2s;
-  }
-  .step.is-visible .step__dot::after {
-    transform: scale(1);
-  }
-  .step__n {
-    display: block;
-    font-family: var(--font-display);
-    font-size: var(--step-1);
-    font-weight: 300;
-    letter-spacing: 0.15em;
-    color: var(--rose-gold);
-    margin-bottom: var(--space-sm);
-  }
-  .step__art {
-    display: inline-block;
-    width: clamp(104px, 11vw, 132px);
-    margin-bottom: var(--space-sm);
-    border-radius: 50%;
+  .ucard:hover {
+    transform: translateY(-5px);
     box-shadow: var(--shadow-soft);
+    border-color: var(--sand);
+  }
+  .ucard__art {
+    display: block;
+    width: clamp(88px, 8vw, 108px);
+    margin-bottom: 0.35rem;
     transition: transform 0.6s var(--ease);
   }
-  .step:hover .step__art {
-    transform: translateY(-6px);
+  .ucard:hover .ucard__art {
+    transform: translateY(-4px);
   }
-  .step__title {
+  .ucard__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rose-gold);
+  }
+  .ucard__title {
     font-size: var(--step-1);
     font-weight: 500;
-    margin-bottom: 0.5rem;
+    line-height: 1.15;
   }
-  .step__text {
+  .ucard__text {
     font-size: var(--step--1);
+    line-height: 1.55;
     color: var(--stone);
-    max-width: 26ch;
-    margin-inline: auto;
   }
 
-  @media (max-width: 780px) {
-    .ritual__steps {
+  /* Étape 5 — bandeau temps de pose */
+  .pose {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    align-items: center;
+    gap: var(--space-xl);
+    margin-top: var(--space-md);
+    padding: clamp(1.75rem, 4vw, 3.25rem);
+    border-radius: var(--radius-lg);
+    color: var(--cream);
+    background:
+      radial-gradient(120% 140% at 15% 0%, #4a352b 0%, transparent 55%),
+      linear-gradient(135deg, #3a2a22 0%, #2c2723 100%);
+    box-shadow: var(--shadow-lift);
+  }
+  .pose__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    font-size: var(--step--1);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+  .pose__title {
+    font-size: var(--step-3);
+    font-weight: 300;
+    color: var(--ivory);
+    margin: var(--space-xs) 0 var(--space-sm);
+  }
+  .pose__text {
+    font-size: var(--step-0);
+    line-height: 1.65;
+    color: rgba(244, 236, 225, 0.75);
+    max-width: 40ch;
+  }
+  .pose__scale {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+  }
+  .pose__bar {
+    position: absolute;
+    top: 26px;
+    left: 8%;
+    right: 8%;
+    height: 2px;
+    background: linear-gradient(90deg, #d8b9a8, #b07a5f, #7c4a38);
+    border-radius: 2px;
+    z-index: 0;
+  }
+  .pose__tier {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.4rem;
+  }
+  .pose__icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    color: var(--gold-light);
+    background: #2c2723;
+    border: 1px solid rgba(201, 164, 139, 0.4);
+  }
+  .pose__swatch {
+    width: 34px;
+    height: 8px;
+    border-radius: 4px;
+    margin-top: 0.15rem;
+  }
+  .pose__time {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    color: var(--ivory);
+    line-height: 1.1;
+  }
+  .pose__intensity {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(244, 236, 225, 0.6);
+  }
+
+  /* Étape 6 — révélation */
+  .reveal-step {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    margin-top: var(--space-md);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    background: var(--ivory);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+  }
+  .reveal-step__art {
+    flex: none;
+    width: clamp(96px, 12vw, 132px);
+  }
+  .reveal-step__title {
+    font-size: var(--step-2);
+    font-weight: 400;
+    margin: var(--space-xs) 0 0.4rem;
+  }
+  .reveal-step__text {
+    font-size: var(--step-0);
+    line-height: 1.65;
+    color: var(--stone);
+    max-width: 60ch;
+  }
+
+  /* Encart secret */
+  .secret {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+    padding: clamp(1.5rem, 3.5vw, 2.5rem);
+    border: 1px solid var(--sand);
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(90% 120% at 100% 0%, #f4e3d3 0%, transparent 55%),
+      linear-gradient(180deg, #fbf5ec 0%, var(--cream) 100%);
+  }
+  .secret__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    color: var(--gold);
+    background: var(--ivory);
+    border: 1px solid var(--sand);
+  }
+  .secret__title {
+    font-size: var(--step-2);
+    font-weight: 400;
+    margin-bottom: 0.35rem;
+  }
+  .secret__text {
+    font-size: var(--step-0);
+    line-height: 1.65;
+    color: var(--stone);
+    max-width: 62ch;
+  }
+
+  @media (max-width: 900px) {
+    .ucards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .pose {
       grid-template-columns: 1fr;
-      gap: 0;
-      max-width: 30rem;
+      gap: var(--space-lg);
+    }
+  }
+  @media (max-width: 620px) {
+    .reveal-step {
+      flex-direction: column;
+      text-align: center;
+    }
+    .reveal-step__text {
       margin-inline: auto;
     }
-    .ritual__line {
-      left: 5px;
-      right: auto;
-      top: 5px;
-      bottom: 5px;
-      width: 1px;
-      height: auto;
-      background: linear-gradient(180deg, transparent, var(--sand) 8%, var(--sand) 92%, transparent);
+    .secret {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
-    .step {
-      text-align: left;
-      padding: 0 0 var(--space-lg) var(--space-lg);
+    .secret__text {
+      margin-inline: auto;
     }
-    .step__marker {
-      left: 5px;
-      top: 6px;
-      transform: translateX(-50%);
-    }
-    .step__icon,
-    .step__text {
-      margin-inline: 0;
+  }
+  @media (max-width: 380px) {
+    .ucards {
+      grid-template-columns: 1fr;
     }
   }
 </style>

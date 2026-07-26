@@ -143,34 +143,78 @@ export const benefits: Benefit[] = [
   },
 ];
 
-export type Step = { n: string; title: string; text: string; icon: string };
+export type Step = {
+  n: string;
+  phase: string;
+  title: string;
+  text: string;
+  icon: string;
+  art: number;
+};
 
 export const steps: Step[] = [
   {
     n: '01',
-    title: 'Préparer les ongles',
-    text: "Limez, polissez et nettoyez délicatement pour une surface parfaitement nette.",
+    phase: 'Préparez',
+    title: 'Préparez vos ongles',
+    text: 'Limez, polissez, repoussez les cuticules et nettoyez soigneusement vos ongles avant toute application.',
     icon: 'file',
+    art: 1,
   },
   {
     n: '02',
-    title: 'Appliquer le henné',
-    text: 'Déposez la préparation avec la brosse, en un geste précis et enveloppant.',
-    icon: 'brush',
+    phase: 'Mélangez',
+    title: 'Préparez votre henné',
+    text: "Versez la poudre dans le bol puis ajoutez progressivement quelques gouttes d'eau jusqu'à obtenir une pâte lisse et homogène.",
+    icon: 'bowl',
+    art: 2,
   },
   {
     n: '03',
-    title: 'Laisser poser',
-    text: "Accordez-vous un instant. Le henné révèle sa couleur en toute douceur.",
-    icon: 'clock',
+    phase: 'Protégez',
+    title: 'Protégez les contours',
+    text: 'Appliquez les stickers autour des ongles pour un résultat net et précis.',
+    icon: 'sticker',
+    art: 3,
   },
   {
     n: '04',
-    title: 'Découvrir la couleur',
-    text: 'Retirez délicatement et laissez apparaître une teinte chaude et lumineuse.',
+    phase: 'Appliquez',
+    title: 'Appliquez le henné',
+    text: 'Recouvrez uniformément chaque ongle avec une fine couche de henné.',
+    icon: 'brush',
+    art: 4,
+  },
+  {
+    n: '05',
+    phase: 'Patientez',
+    title: 'Laissez agir',
+    text: 'Plus le temps de pose est long, plus la couleur sera intense.',
+    icon: 'clock',
+    art: 5,
+  },
+  {
+    n: '06',
+    phase: 'Révélez',
+    title: 'Découvrez votre couleur',
+    text: 'Retirez délicatement le henné sec. La couleur continuera de se développer naturellement pendant les 24 à 48 heures suivantes.',
     icon: 'sparkle',
+    art: 6,
   },
 ];
+
+export type PoseLevel = { icon: string; time: string; label: string; level: number };
+
+export const poseLevels: PoseLevel[] = [
+  { icon: 'clock', time: '30 min', label: 'Léger', level: 1 },
+  { icon: 'clock', time: '1–2 h', label: 'Soutenu', level: 2 },
+  { icon: 'moon', time: 'Toute une nuit', label: 'Intensité maximale', level: 3 },
+];
+
+export const secret = {
+  title: "Le secret d'un résultat optimal",
+  text: "Pour une couleur plus intense, laissez poser le henné le plus longtemps possible et évitez de mouiller vos ongles juste après le retrait. La couleur continue d'évoluer naturellement pendant les heures qui suivent.",
+};
 
 export type Testimonial = { quote: string; author: string; detail: string };
 
