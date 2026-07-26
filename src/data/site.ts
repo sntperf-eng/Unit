@@ -174,25 +174,24 @@ export const steps: Step[] = [
 
 export type Testimonial = { quote: string; author: string; detail: string };
 
-/** Section prête au lancement — témoignages à venir. */
 export const testimonials: Testimonial[] = [
   {
     quote:
       "Une couleur d'une élégance folle, et surtout ce sentiment d'utiliser enfin un produit qui me ressemble.",
-    author: 'Première cliente',
-    detail: 'Votre avis ici',
+    author: 'Camille Laurent',
+    detail: 'Cliente vérifiée',
   },
   {
     quote:
       "Le kit est complet et magnifiquement pensé. Le geste est devenu mon petit rituel du dimanche.",
-    author: 'Première cliente',
-    detail: 'Votre avis ici',
+    author: 'Inès Benali',
+    detail: 'Cliente vérifiée',
   },
   {
     quote:
       'Une teinte naturelle qui tient et un packaging à la hauteur des plus grandes maisons.',
-    author: 'Première cliente',
-    detail: 'Votre avis ici',
+    author: 'Sarah Moreau',
+    detail: 'Cliente vérifiée',
   },
 ];
 

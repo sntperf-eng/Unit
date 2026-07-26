@@ -1,5 +1,5 @@
 ---
-import Icon from './Icon.astro';
+import StepArt from './StepArt.astro';
 import { steps } from '../data/site';
 ---
 
@@ -22,7 +22,7 @@ import { steps } from '../data/site';
             <span class="step__dot"></span>
           </span>
           <span class="step__n">{step.n}</span>
-          <span class="step__icon"><Icon name={step.icon} size={30} /></span>
+          <span class="step__art"><StepArt n={(i + 1) as 1 | 2 | 3 | 4} /></span>
           <h3 class="step__title">{step.title}</h3>
           <p class="step__text">{step.text}</p>
         </li>
@@ -49,7 +49,8 @@ import { steps } from '../data/site';
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-md);
-    counter-reset: step;
+    list-style: none;
+    padding-left: 0;
   }
   /* Ligne de liaison horizontale */
   .ritual__line {
@@ -110,21 +111,16 @@ import { steps } from '../data/site';
     color: var(--rose-gold);
     margin-bottom: var(--space-sm);
   }
-  .step__icon {
-    display: inline-grid;
-    place-items: center;
-    width: 76px;
-    height: 76px;
+  .step__art {
+    display: inline-block;
+    width: clamp(104px, 11vw, 132px);
     margin-bottom: var(--space-sm);
     border-radius: 50%;
-    color: var(--ink);
-    background: var(--ivory);
-    border: 1px solid var(--line);
     box-shadow: var(--shadow-soft);
     transition: transform 0.6s var(--ease);
   }
-  .step:hover .step__icon {
-    transform: translateY(-6px) rotate(-4deg);
+  .step:hover .step__art {
+    transform: translateY(-6px);
   }
   .step__title {
     font-size: var(--step-1);
