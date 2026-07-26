@@ -1,0 +1,128 @@
+---
+import Icon from './Icon.astro';
+import { faqs } from '../data/site';
+---
+
+<section class="faq section" id="faq">
+  <div class="container faq__container">
+    <div class="faq__head" data-reveal>
+      <p class="eyebrow">Questions fréquentes</p>
+      <h2 class="section-title">Tout ce qu'il faut savoir.</h2>
+    </div>
+
+    <div class="faq__list" data-faq>
+      {faqs.map((item, i) => (
+        <details class="faq__item" data-reveal style={`--reveal-delay: ${i * 60}ms`}>
+          <summary class="faq__q">
+            <span>{item.q}</span>
+            <span class="faq__toggle" aria-hidden="true">
+              <Icon name="plus" size={20} />
+            </span>
+          </summary>
+          <div class="faq__a-wrap">
+            <p class="faq__a">{item.a}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    background: linear-gradient(180deg, var(--cream) 0%, var(--ivory) 100%);
+  }
+  .faq__container {
+    max-width: 52rem;
+  }
+  .faq__head {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+  }
+  .faq__item {
+    border-bottom: 1px solid var(--line);
+  }
+  .faq__item:first-child {
+    border-top: 1px solid var(--line);
+  }
+  .faq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 400;
+    color: var(--ink);
+    list-style: none;
+    cursor: pointer;
+    transition: color 0.4s var(--ease);
+  }
+  .faq__q::-webkit-details-marker {
+    display: none;
+  }
+  .faq__q:hover {
+    color: var(--rose-gold);
+  }
+  .faq__toggle {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: var(--rose-gold);
+    border: 1px solid var(--line);
+    transition: transform 0.45s var(--ease), background-color 0.45s var(--ease),
+      color 0.45s var(--ease);
+  }
+  .faq__item[open] .faq__toggle {
+    transform: rotate(135deg);
+    background: var(--rose-gold);
+    color: var(--ivory);
+    border-color: var(--rose-gold);
+  }
+  /* Animation d'ouverture douce */
+  .faq__a-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.5s var(--ease);
+  }
+  .faq__item[open] .faq__a-wrap {
+    grid-template-rows: 1fr;
+  }
+  .faq__a {
+    overflow: hidden;
+    min-height: 0;
+    margin: 0;
+    padding-right: clamp(0px, 6vw, 56px);
+    color: var(--stone);
+    font-size: var(--step-0);
+    line-height: 1.7;
+    opacity: 0;
+    transition: opacity 0.5s var(--ease), padding-bottom 0.5s var(--ease);
+  }
+  .faq__item[open] .faq__a {
+    opacity: 1;
+    padding-bottom: var(--space-md);
+  }
+</style>
+
+<script>
+  // Accordéon : n'ouvrir qu'une question à la fois, en douceur.
+  const container = document.querySelector('[data-faq]');
+  if (container) {
+    const items = Array.from(container.querySelectorAll<HTMLDetailsElement>('.faq__item'));
+    items.forEach((item) => {
+      const summary = item.querySelector('summary');
+      summary?.addEventListener('click', () => {
+        if (!item.open) {
+          items.forEach((other) => {
+            if (other !== item) other.open = false;
+          });
+        }
+      });
+    });
+  }
+</script>

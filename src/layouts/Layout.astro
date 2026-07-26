@@ -1,0 +1,175 @@
+---
+import '../styles/global.css';
+import { brand } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${brand.name} — ${brand.slogan}`,
+  description = "NAYRA réinvente la manucure naturelle avec un kit de coloration des ongles au henné. Premium, élégant, naturel — la beauté sans compromis.",
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, brand.url).href;
+const ogImage = new URL('/og-image.png', brand.url).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Brand',
+  name: brand.name,
+  slogan: brand.slogan,
+  description,
+  url: brand.url,
+  logo: new URL('/favicon.svg', brand.url).href,
+  sameAs: [brand.social.instagram, brand.social.tiktok],
+};
+
+const productLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Kit de coloration des ongles au henné NAYRA',
+  brand: { '@type': 'Brand', name: brand.name },
+  description:
+    "Kit complet de coloration des ongles au henné : une alternative naturelle et élégante au vernis classique.",
+  category: 'Beauté / Soin des ongles',
+  image: ogImage,
+};
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#faf6ef" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Icônes -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={brand.name} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${brand.name} — ${brand.slogan}`} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="/" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(productLd)} />
+  </head>
+
+  <body>
+    <a href="#marque" class="visually-hidden">Aller au contenu principal</a>
+    <slot />
+
+    <script>
+      // ===== Révélation au scroll (fade-in) =====
+      const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!prefersReduced && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                obs.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+        );
+        revealEls.forEach((el) => io.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add('is-visible'));
+      }
+
+      // ===== En-tête : état au défilement =====
+      const header = document.querySelector<HTMLElement>('[data-header]');
+      const onScroll = () => {
+        if (header) header.classList.toggle('is-scrolled', window.scrollY > 24);
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // ===== Menu mobile =====
+      const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
+      const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
+      const closeMenu = () => {
+        burger?.setAttribute('aria-expanded', 'false');
+        burger?.setAttribute('aria-label', 'Ouvrir le menu');
+        menu?.removeAttribute('data-open');
+        document.body.style.removeProperty('overflow');
+      };
+      burger?.addEventListener('click', () => {
+        const open = burger.getAttribute('aria-expanded') === 'true';
+        if (open) {
+          closeMenu();
+        } else {
+          burger.setAttribute('aria-expanded', 'true');
+          burger.setAttribute('aria-label', 'Fermer le menu');
+          menu?.removeAttribute('hidden');
+          requestAnimationFrame(() => menu?.setAttribute('data-open', ''));
+          document.body.style.overflow = 'hidden';
+        }
+      });
+      document.querySelectorAll('[data-mobile-link]').forEach((l) =>
+        l.addEventListener('click', closeMenu)
+      );
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+      });
+
+      // ===== Parallaxe léger =====
+      if (!prefersReduced) {
+        const parallaxEls = Array.from(
+          document.querySelectorAll<HTMLElement>('[data-parallax]')
+        );
+        let ticking = false;
+        const update = () => {
+          const vh = window.innerHeight;
+          parallaxEls.forEach((el) => {
+            const speed = parseFloat(el.dataset.parallaxSpeed || '0.1');
+            const rect = el.getBoundingClientRect();
+            const offset = (rect.top + rect.height / 2 - vh / 2) * speed;
+            el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
+          });
+          ticking = false;
+        };
+        const requestUpdate = () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+          }
+        };
+        if (parallaxEls.length) {
+          update();
+          window.addEventListener('scroll', requestUpdate, { passive: true });
+          window.addEventListener('resize', requestUpdate, { passive: true });
+        }
+      }
+    </script>
+  </body>
+</html>

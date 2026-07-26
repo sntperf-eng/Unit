@@ -1,0 +1,95 @@
+---
+import Icon from './Icon.astro';
+import { benefits } from '../data/site';
+---
+
+<section class="benefits section">
+  <div class="container">
+    <div class="benefits__head" data-reveal>
+      <p class="eyebrow">Pourquoi choisir NAYRA</p>
+      <h2 class="section-title">Une beauté qui a du sens.</h2>
+    </div>
+
+    <div class="benefits__grid">
+      {benefits.map((b, i) => (
+        <article class="benefit" data-reveal style={`--reveal-delay: ${(i % 3) * 90}ms`}>
+          <span class="benefit__icon">
+            <Icon name={b.icon} size={28} />
+          </span>
+          <h3 class="benefit__title">{b.title}</h3>
+          <p class="benefit__text">{b.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .benefits {
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .benefits__head {
+    text-align: center;
+    max-width: 40ch;
+    margin: 0 auto var(--space-xl);
+  }
+  .benefits__head .eyebrow {
+    color: var(--rose-gold);
+  }
+  .benefits__head .section-title {
+    color: var(--ivory);
+  }
+  .benefits__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  }
+  .benefit {
+    flex: 1 1 200px;
+    max-width: 260px;
+    padding: var(--space-lg) var(--space-md);
+    background: rgba(244, 236, 225, 0.03);
+    border: 1px solid rgba(233, 220, 201, 0.14);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    transition: background-color 0.6s var(--ease), transform 0.6s var(--ease),
+      border-color 0.6s var(--ease);
+  }
+  .benefit:hover {
+    background: #332d28;
+    transform: translateY(-5px);
+    border-color: rgba(201, 164, 139, 0.4);
+  }
+  .benefit__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    margin-bottom: var(--space-sm);
+    border-radius: 50%;
+    color: var(--rose-gold);
+    border: 1px solid rgba(201, 164, 139, 0.4);
+    transition: transform 0.6s var(--ease), background-color 0.6s var(--ease),
+      color 0.6s var(--ease);
+  }
+  .benefit:hover .benefit__icon {
+    transform: translateY(-4px);
+    background: var(--rose-gold);
+    color: var(--ink);
+  }
+  .benefit__title {
+    font-size: var(--step-2);
+    font-weight: 400;
+    color: var(--ivory);
+    margin-bottom: 0.5rem;
+  }
+  .benefit__text {
+    font-size: var(--step--1);
+    line-height: 1.65;
+    color: rgba(244, 236, 225, 0.72);
+    max-width: 30ch;
+    margin-inline: auto;
+  }
+</style>

@@ -1,0 +1,12 @@
+{
+  "name": "NAYRA — La beauté sans compromis",
+  "short_name": "NAYRA",
+  "description": "Kit de coloration des ongles au henné. Naturel, élégant, premium.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf6ef",
+  "theme_color": "#2c2723",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

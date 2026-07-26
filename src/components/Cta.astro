@@ -1,0 +1,85 @@
+---
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+---
+
+<section class="cta">
+  <div class="cta__bg" aria-hidden="true"></div>
+  <div class="container cta__inner" data-reveal>
+    <span class="cta__mark"><Logo showMark={true} /></span>
+    <h2 class="cta__title">
+      Offrez-vous un geste de beauté<br />qui vous ressemble.
+    </h2>
+    <p class="cta__text">
+      Le kit NAYRA, c'est le début d'un rituel. Naturel, élégant, entièrement pensé pour vous.
+    </p>
+    <a href="mailto:contact@nayra.com?subject=Commander%20le%20kit%20NAYRA" class="btn cta__btn">
+      Commander maintenant
+      <Icon name="arrow" size={17} class="btn__arrow" />
+    </a>
+    <p class="cta__reassure">
+      <Icon name="leaf" size={15} /> Formule naturelle
+      <span aria-hidden="true">·</span>
+      <Icon name="gift" size={15} /> Kit complet
+      <span aria-hidden="true">·</span>
+      <Icon name="heart" size={15} /> Pensé en France
+    </p>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    text-align: center;
+    padding-block: var(--space-2xl);
+    overflow: hidden;
+    color: var(--ink);
+  }
+  .cta__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(80% 120% at 50% 0%, #f4ddd5 0%, transparent 60%),
+      linear-gradient(180deg, var(--powder) 0%, var(--cream) 100%);
+  }
+  .cta__inner {
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .cta__mark {
+    font-size: 1rem;
+    margin-bottom: var(--space-md);
+  }
+  .cta__title {
+    font-size: var(--step-4);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: var(--space-sm);
+  }
+  .cta__text {
+    font-size: var(--step-1);
+    font-weight: 300;
+    color: var(--stone);
+    max-width: 40ch;
+    margin: 0 auto var(--space-lg);
+  }
+  .cta__reassure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.6em;
+    margin-top: var(--space-md);
+    font-size: var(--step--1);
+    letter-spacing: 0.04em;
+    color: var(--stone);
+  }
+  .cta__reassure svg {
+    display: inline-block;
+    vertical-align: -0.2em;
+    color: var(--rose-gold);
+  }
+</style>

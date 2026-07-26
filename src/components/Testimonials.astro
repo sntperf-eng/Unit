@@ -1,0 +1,117 @@
+---
+import { testimonials } from '../data/site';
+---
+
+<section class="avis section" id="avis">
+  <div class="container">
+    <div class="avis__head" data-reveal>
+      <p class="eyebrow">Avis clientes</p>
+      <h2 class="section-title">Elles ont adopté le rituel.</h2>
+      <p class="lead">
+        Les premières histoires s'écrivent en ce moment. Bientôt, leurs mots
+        prendront place ici.
+      </p>
+    </div>
+
+    <div class="avis__grid">
+      {testimonials.map((t, i) => (
+        <figure class="quote" data-reveal style={`--reveal-delay: ${i * 100}ms`}>
+          <span class="quote__mark" aria-hidden="true">&ldquo;</span>
+          <blockquote class="quote__text">{t.quote}</blockquote>
+          <figcaption class="quote__cite">
+            <span class="quote__stars" aria-label="Note à venir">
+              {'★★★★★'}
+            </span>
+            <span class="quote__author">{t.author}</span>
+            <span class="quote__detail">{t.detail}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <p class="avis__note" data-reveal>
+      Vous faites partie des premières ? Partagez votre expérience à
+      <a href="mailto:contact@nayra.com" class="link-underline">contact@nayra.com</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .avis {
+    background: var(--ivory);
+  }
+  .avis__head {
+    text-align: center;
+    max-width: 46ch;
+    margin: 0 auto var(--space-xl);
+  }
+  .avis__head .lead {
+    margin-top: var(--space-sm);
+  }
+  .avis__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: var(--space-md);
+  }
+  .quote {
+    position: relative;
+    padding: var(--space-lg) var(--space-md) var(--space-md);
+    background: linear-gradient(180deg, var(--cream) 0%, var(--ivory) 100%);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    margin: 0;
+    transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+  }
+  .quote:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-soft);
+  }
+  .quote__mark {
+    position: absolute;
+    top: 0.1em;
+    left: 0.4em;
+    font-family: var(--font-display);
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--powder-deep);
+    opacity: 0.5;
+  }
+  .quote__text {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0 0 var(--space-md);
+  }
+  .quote__cite {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-style: normal;
+  }
+  .quote__stars {
+    color: var(--rose-gold);
+    letter-spacing: 0.15em;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+  .quote__author {
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .quote__detail {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--mist);
+  }
+  .avis__note {
+    text-align: center;
+    margin-top: var(--space-lg);
+    font-size: var(--step--1);
+    color: var(--stone);
+  }
+</style>

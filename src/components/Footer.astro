@@ -1,0 +1,171 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { brand, footerLinks } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a href="#top" aria-label="NAYRA — retour en haut" class="footer__logo">
+          <Logo />
+        </a>
+        <p class="footer__slogan">{brand.slogan}</p>
+        <div class="footer__social">
+          <a href={brand.social.instagram} class="footer__social-link" aria-label="Instagram" rel="noopener" target="_blank">
+            <Icon name="instagram" size={20} />
+          </a>
+          <a href={brand.social.tiktok} class="footer__social-link" aria-label="TikTok" rel="noopener" target="_blank">
+            <Icon name="tiktok" size={20} />
+          </a>
+        </div>
+      </div>
+
+      <nav class="footer__col" aria-label="Navigation pied de page">
+        <h3 class="footer__heading">Explorer</h3>
+        <ul>
+          {footerLinks.navigation.map((l) => (
+            <li><a href={l.href} class="footer__link">{l.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <nav class="footer__col" aria-label="Informations légales">
+        <h3 class="footer__heading">Informations</h3>
+        <ul>
+          {footerLinks.legal.map((l) => (
+            <li><a href={l.href} class="footer__link">{l.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="footer__col footer__contact">
+        <h3 class="footer__heading">Contact</h3>
+        <a href={`mailto:${brand.email}`} class="footer__link">{brand.email}</a>
+        <p class="footer__contact-note">
+          Une question ? Nous vous répondons avec soin.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {year} {brand.name}. Tous droits réservés.</p>
+      <p class="footer__made">Conçu avec soin · La beauté sans compromis.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--ink);
+    color: rgba(244, 236, 225, 0.7);
+    padding-block: var(--space-xl) var(--space-lg);
+  }
+  .footer__top {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+    gap: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid rgba(233, 220, 201, 0.14);
+  }
+  .footer__logo {
+    display: inline-block;
+    font-size: 0.95rem;
+    color: var(--ivory);
+  }
+  .footer__logo :global(.logo) {
+    color: var(--ivory);
+  }
+  .footer__slogan {
+    margin-top: var(--space-sm);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--step-1);
+    color: rgba(244, 236, 225, 0.85);
+  }
+  .footer__social {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: var(--space-md);
+  }
+  .footer__social-link {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    color: var(--cream);
+    border: 1px solid rgba(233, 220, 201, 0.24);
+    transition: background-color 0.4s var(--ease), color 0.4s var(--ease),
+      transform 0.4s var(--ease);
+  }
+  .footer__social-link:hover {
+    background: var(--rose-gold);
+    color: var(--ink);
+    transform: translateY(-3px);
+    border-color: var(--rose-gold);
+  }
+  .footer__heading {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--rose-gold);
+    margin-bottom: var(--space-sm);
+  }
+  .footer__col ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .footer__link {
+    font-size: var(--step--1);
+    color: rgba(244, 236, 225, 0.7);
+    transition: color 0.3s var(--ease);
+  }
+  .footer__link:hover {
+    color: var(--ivory);
+  }
+  .footer__contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    align-items: flex-start;
+  }
+  .footer__contact-note {
+    font-size: var(--step--1);
+    line-height: 1.6;
+    color: rgba(244, 236, 225, 0.5);
+  }
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: var(--space-md);
+    font-size: 0.8rem;
+    color: rgba(244, 236, 225, 0.45);
+  }
+
+  @media (max-width: 780px) {
+    .footer__top {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md) var(--space-lg);
+    }
+    .footer__brand {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 480px) {
+    .footer__top {
+      grid-template-columns: 1fr;
+    }
+    .footer__bottom {
+      justify-content: center;
+      text-align: center;
+    }
+  }
+</style>

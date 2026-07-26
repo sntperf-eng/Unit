@@ -1,0 +1,57 @@
+---
+import { manifesto } from '../data/site';
+---
+
+<section class="manifesto section" id="marque">
+  <div class="container container--narrow">
+    <p class="eyebrow" data-reveal>{manifesto.eyebrow}</p>
+    <h2 class="section-title" data-reveal style="--reveal-delay: 60ms">
+      {manifesto.title}
+    </h2>
+    <hr class="rule" data-reveal style="--reveal-delay: 120ms" />
+
+    <div class="manifesto__body">
+      {manifesto.paragraphs.map((p, i) => (
+        <p class="manifesto__p" data-reveal style={`--reveal-delay: ${160 + i * 90}ms`}>
+          {p}
+        </p>
+      ))}
+    </div>
+
+    <p class="manifesto__signature" data-reveal style="--reveal-delay: 460ms">
+      {manifesto.signature}
+    </p>
+  </div>
+</section>
+
+<style>
+  .manifesto {
+    text-align: center;
+    background: var(--ivory);
+  }
+  .manifesto .rule {
+    margin-inline: auto;
+    margin-block: var(--space-md);
+  }
+  .manifesto__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    max-width: 54ch;
+    margin-inline: auto;
+  }
+  .manifesto__p {
+    font-size: var(--step-1);
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--stone);
+  }
+  .manifesto__signature {
+    margin-top: var(--space-lg);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--step-3);
+    font-weight: 300;
+    color: var(--ink);
+  }
+</style>

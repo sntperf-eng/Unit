@@ -1,0 +1,140 @@
+---
+import Icon from './Icon.astro';
+import { kitItems } from '../data/site';
+---
+
+<section class="kit section" id="kit">
+  <div class="container">
+    <div class="kit__head">
+      <div class="kit__intro">
+        <p class="eyebrow" data-reveal>Le kit NAYRA</p>
+        <h2 class="section-title" data-reveal style="--reveal-delay: 60ms">
+          Un écrin complet, pensé dans le moindre détail.
+        </h2>
+        <p class="lead" data-reveal style="--reveal-delay: 120ms">
+          Douze éléments réunis avec soin pour transformer un simple geste en
+          véritable rituel de beauté. Rien de superflu, tout l'essentiel.
+        </p>
+        <a href="#rituel" class="btn btn--ghost kit__cta" data-reveal style="--reveal-delay: 180ms">
+          Voir le rituel
+          <Icon name="arrow" size={16} class="btn__arrow" />
+        </a>
+      </div>
+
+      <div class="kit__count" data-reveal aria-hidden="true">
+        <span class="kit__count-num">12</span>
+        <span class="kit__count-label">éléments</span>
+      </div>
+    </div>
+
+    <ul class="kit__grid">
+      {kitItems.map((item, i) => (
+        <li class="kit__item" data-reveal style={`--reveal-delay: ${(i % 4) * 70}ms`}>
+          <span class="kit__icon">
+            <Icon name={item.icon} size={26} />
+          </span>
+          <span class="kit__name">{item.name}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .kit {
+    background: linear-gradient(180deg, var(--cream) 0%, var(--ivory) 100%);
+  }
+  .kit__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+  }
+  .kit__intro {
+    max-width: 46ch;
+  }
+  .kit__intro .lead {
+    margin-top: var(--space-sm);
+  }
+  .kit__cta {
+    margin-top: var(--space-md);
+  }
+  .kit__count {
+    flex: none;
+    text-align: center;
+    line-height: 1;
+  }
+  .kit__count-num {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(4rem, 9vw, 7rem);
+    color: var(--rose-gold);
+  }
+  .kit__count-label {
+    font-size: var(--step--1);
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+
+  .kit__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  }
+  .kit__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-sm);
+    background: var(--ivory);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease),
+      border-color 0.5s var(--ease);
+  }
+  .kit__item:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-soft);
+    border-color: var(--sand);
+  }
+  .kit__icon {
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    color: var(--rose-gold);
+    background: radial-gradient(circle at 50% 40%, #fff 0%, var(--cream) 100%);
+    border: 1px solid var(--line);
+    transition: color 0.5s var(--ease), transform 0.5s var(--ease);
+  }
+  .kit__item:hover .kit__icon {
+    color: var(--ink);
+    transform: scale(1.06);
+  }
+  .kit__name {
+    font-size: var(--step--1);
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+
+  @media (max-width: 780px) {
+    .kit__head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .kit__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 520px) {
+    .kit__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

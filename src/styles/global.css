@@ -1,0 +1,350 @@
+/* ==========================================================================
+   NAYRA — Design System
+   La beauté sans compromis.
+   ========================================================================== */
+
+/* Self-hosted variable-weight-friendly fonts (subset, no external requests) */
+@import '@fontsource/cormorant-garamond/300.css';
+@import '@fontsource/cormorant-garamond/400.css';
+@import '@fontsource/cormorant-garamond/500.css';
+@import '@fontsource/cormorant-garamond/600.css';
+@import '@fontsource/jost/300.css';
+@import '@fontsource/jost/400.css';
+@import '@fontsource/jost/500.css';
+
+/* --------------------------------------------------------------------------
+   Design tokens
+   -------------------------------------------------------------------------- */
+:root {
+  /* Palette — luxe discret */
+  --ivory: #faf6ef;          /* fond principal — blanc cassé / ivoire */
+  --cream: #f4ece1;          /* crème doux */
+  --warm-beige: #e9dcc9;     /* beige chaud */
+  --sand: #dcc9af;           /* sable */
+  --powder: #ecd7d1;         /* rose poudré */
+  --powder-deep: #d9b4ab;    /* rose poudré profond */
+  --rose-gold: #c9a48b;      /* or rose */
+  --gold: #bd9a5f;           /* doré */
+  --sage: #a7b3a0;           /* vert sauge très discret */
+
+  --ink: #2c2723;            /* texte principal — brun presque noir chaud */
+  --stone: #6f665c;          /* texte secondaire */
+  --mist: #a49a8d;           /* texte tertiaire / légendes */
+  --line: #e7ddce;           /* filets / bordures */
+
+  /* Typographie */
+  --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-body: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Rythme fluide (clamp) */
+  --step--1: clamp(0.83rem, 0.79rem + 0.20vw, 0.94rem);
+  --step-0: clamp(1rem, 0.95rem + 0.24vw, 1.13rem);
+  --step-1: clamp(1.2rem, 1.11rem + 0.44vw, 1.5rem);
+  --step-2: clamp(1.44rem, 1.29rem + 0.75vw, 2rem);
+  --step-3: clamp(1.73rem, 1.49rem + 1.19vw, 2.66rem);
+  --step-4: clamp(2.07rem, 1.71rem + 1.83vw, 3.55rem);
+  --step-5: clamp(2.49rem, 1.93rem + 2.78vw, 4.73rem);
+
+  /* Espacement */
+  --space-xs: clamp(0.75rem, 0.7rem + 0.25vw, 1rem);
+  --space-sm: clamp(1rem, 0.9rem + 0.5vw, 1.5rem);
+  --space-md: clamp(1.5rem, 1.3rem + 1vw, 2.5rem);
+  --space-lg: clamp(2.5rem, 2rem + 2.5vw, 4.5rem);
+  --space-xl: clamp(4rem, 3rem + 5vw, 8rem);
+  --space-2xl: clamp(5rem, 3.5rem + 7.5vw, 11rem);
+
+  /* Structure */
+  --container: 76rem;
+  --container-narrow: 46rem;
+  --radius: 2px;
+  --radius-lg: 6px;
+
+  /* Transitions */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Ombres discrètes */
+  --shadow-soft: 0 1px 2px rgba(44, 39, 35, 0.03),
+                 0 8px 30px rgba(44, 39, 35, 0.06);
+  --shadow-lift: 0 2px 4px rgba(44, 39, 35, 0.04),
+                 0 20px 50px rgba(44, 39, 35, 0.1);
+
+  color-scheme: light;
+}
+
+/* --------------------------------------------------------------------------
+   Reset & base
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--ink);
+  background-color: var(--ivory);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--rose-gold);
+  outline-offset: 3px;
+  border-radius: var(--radius);
+}
+
+::selection {
+  background: var(--powder);
+  color: var(--ink);
+}
+
+/* --------------------------------------------------------------------------
+   Layout utilities
+   -------------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
+.section {
+  padding-block: var(--space-2xl);
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--rose-gold);
+  margin-bottom: var(--space-sm);
+}
+
+.section-title {
+  font-size: var(--step-4);
+  font-weight: 300;
+  margin-bottom: var(--space-md);
+}
+
+.lead {
+  font-size: var(--step-1);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--stone);
+}
+
+/* Filet ornemental */
+.rule {
+  width: 44px;
+  height: 1px;
+  background: var(--rose-gold);
+  border: none;
+  margin: 0;
+}
+
+.rule--center {
+  margin-inline: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Boutons
+   -------------------------------------------------------------------------- */
+.btn {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--ivory);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  padding: 1.05em 2.4em;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-bg);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: color 0.5s var(--ease), border-color 0.5s var(--ease);
+  isolation: isolate;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--rose-gold);
+  transform: translateY(101%);
+  transition: transform 0.5s var(--ease);
+  z-index: -1;
+}
+
+.btn:hover::before,
+.btn:focus-visible::before {
+  transform: translateY(0);
+}
+
+.btn:hover,
+.btn:focus-visible {
+  color: var(--ink);
+  border-color: var(--rose-gold);
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  color: var(--ivory);
+}
+
+.btn--ghost::before {
+  background: var(--ink);
+}
+
+.btn__arrow {
+  transition: transform 0.4s var(--ease);
+}
+
+.btn:hover .btn__arrow {
+  transform: translateX(4px);
+}
+
+/* Lien texte souligné animé */
+.link-underline {
+  position: relative;
+  font-size: var(--step--1);
+  letter-spacing: 0.05em;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s var(--ease);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* --------------------------------------------------------------------------
+   Animations au scroll — révélation douce (fade-in)
+   -------------------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 1s var(--ease), transform 1s var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Accessibilité — masquer visuellement */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -1,0 +1,171 @@
+---
+import Icon from './Icon.astro';
+import { steps } from '../data/site';
+---
+
+<section class="ritual section" id="rituel">
+  <div class="container">
+    <div class="ritual__head" data-reveal>
+      <p class="eyebrow">Le rituel</p>
+      <h2 class="section-title">Comment ça fonctionne</h2>
+      <p class="lead">
+        Quatre gestes simples, comme une parenthèse de douceur que l'on
+        s'accorde à soi-même.
+      </p>
+    </div>
+
+    <ol class="ritual__steps">
+      <span class="ritual__line" aria-hidden="true"></span>
+      {steps.map((step, i) => (
+        <li class="step" data-reveal style={`--reveal-delay: ${i * 110}ms`}>
+          <span class="step__marker">
+            <span class="step__dot"></span>
+          </span>
+          <span class="step__n">{step.n}</span>
+          <span class="step__icon"><Icon name={step.icon} size={30} /></span>
+          <h3 class="step__title">{step.title}</h3>
+          <p class="step__text">{step.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .ritual {
+    background: linear-gradient(180deg, var(--ivory) 0%, var(--cream) 100%);
+  }
+  .ritual__head {
+    text-align: center;
+    max-width: 44ch;
+    margin: 0 auto var(--space-xl);
+  }
+  .ritual__head .lead {
+    margin-top: var(--space-sm);
+  }
+
+  .ritual__steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md);
+    counter-reset: step;
+  }
+  /* Ligne de liaison horizontale */
+  .ritual__line {
+    position: absolute;
+    top: 5px;
+    left: 12.5%;
+    right: 12.5%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--sand) 12%,
+      var(--sand) 88%,
+      transparent
+    );
+  }
+  .step {
+    position: relative;
+    text-align: center;
+    padding-top: var(--space-lg);
+  }
+  .step__marker {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    place-items: center;
+    width: 11px;
+    height: 11px;
+  }
+  .step__dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--ivory);
+    border: 1px solid var(--rose-gold);
+    position: relative;
+  }
+  .step__dot::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: var(--rose-gold);
+    transform: scale(0);
+    transition: transform 0.6s var(--ease) 0.2s;
+  }
+  .step.is-visible .step__dot::after {
+    transform: scale(1);
+  }
+  .step__n {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--rose-gold);
+    margin-bottom: var(--space-sm);
+  }
+  .step__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    margin-bottom: var(--space-sm);
+    border-radius: 50%;
+    color: var(--ink);
+    background: var(--ivory);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.6s var(--ease);
+  }
+  .step:hover .step__icon {
+    transform: translateY(-6px) rotate(-4deg);
+  }
+  .step__title {
+    font-size: var(--step-1);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .step__text {
+    font-size: var(--step--1);
+    color: var(--stone);
+    max-width: 26ch;
+    margin-inline: auto;
+  }
+
+  @media (max-width: 780px) {
+    .ritual__steps {
+      grid-template-columns: 1fr;
+      gap: 0;
+      max-width: 30rem;
+      margin-inline: auto;
+    }
+    .ritual__line {
+      left: 5px;
+      right: auto;
+      top: 5px;
+      bottom: 5px;
+      width: 1px;
+      height: auto;
+      background: linear-gradient(180deg, transparent, var(--sand) 8%, var(--sand) 92%, transparent);
+    }
+    .step {
+      text-align: left;
+      padding: 0 0 var(--space-lg) var(--space-lg);
+    }
+    .step__marker {
+      left: 5px;
+      top: 6px;
+      transform: translateX(-50%);
+    }
+    .step__icon,
+    .step__text {
+      margin-inline: 0;
+    }
+  }
+</style>
