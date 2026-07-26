@@ -1,12 +1,11 @@
 ---
 import Icon from './Icon.astro';
-import Logo from './Logo.astro';
 ---
 
 <section class="cta">
   <div class="cta__bg" aria-hidden="true"></div>
   <div class="container cta__inner" data-reveal>
-    <span class="cta__mark"><Logo showMark={true} /></span>
+    <span class="cta__mark brand-mark" aria-hidden="true"></span>
     <h2 class="cta__title">
       Offrez-vous un geste de beauté<br />qui vous ressemble.
     </h2>
@@ -40,8 +39,8 @@ import Logo from './Logo.astro';
     inset: 0;
     z-index: -1;
     background:
-      radial-gradient(80% 120% at 50% 0%, #f4ddd5 0%, transparent 60%),
-      linear-gradient(180deg, var(--powder) 0%, var(--cream) 100%);
+      radial-gradient(70% 110% at 50% 0%, #ecdcc9 0%, transparent 60%),
+      linear-gradient(180deg, var(--warm-beige) 0%, var(--cream) 100%);
   }
   .cta__inner {
     max-width: 40rem;
@@ -50,7 +49,7 @@ import Logo from './Logo.astro';
     align-items: center;
   }
   .cta__mark {
-    font-size: 1rem;
+    --bh: 26px;
     margin-bottom: var(--space-md);
   }
   .cta__title {

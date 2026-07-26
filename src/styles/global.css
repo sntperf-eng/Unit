@@ -16,15 +16,17 @@
    Design tokens
    -------------------------------------------------------------------------- */
 :root {
-  /* Palette — luxe discret */
+  /* Palette — accordée au logo NAYRA (or/bronze chaud sur beige) */
   --ivory: #faf6ef;          /* fond principal — blanc cassé / ivoire */
-  --cream: #f4ece1;          /* crème doux */
-  --warm-beige: #e9dcc9;     /* beige chaud */
-  --sand: #dcc9af;           /* sable */
-  --powder: #ecd7d1;         /* rose poudré */
-  --powder-deep: #d9b4ab;    /* rose poudré profond */
-  --rose-gold: #c9a48b;      /* or rose */
-  --gold: #bd9a5f;           /* doré */
+  --cream: #f3ead9;          /* crème doux */
+  --warm-beige: #e9dccb;     /* beige chaud — fond du logo */
+  --beige-logo: #e8d8cb;     /* teinte exacte du fond du logo */
+  --sand: #dcc7a9;           /* sable */
+  --powder: #ecdcd0;         /* rose poudré très doux */
+  --powder-deep: #d8bfa6;    /* accent chaud profond */
+  --rose-gold: #b98f5c;      /* or / bronze chaud — accent principal */
+  --gold: #a9814d;           /* doré profond (contraste texte) */
+  --gold-light: #d3b686;     /* doré clair (dégradés) */
   --sage: #a7b3a0;           /* vert sauge très discret */
 
   --ink: #2c2723;            /* texte principal — brun presque noir chaud */
@@ -334,6 +336,22 @@ ul {
     opacity: 1;
     transform: none;
   }
+}
+
+/* --------------------------------------------------------------------------
+   Logotype NAYRA — cadrage du mot « NAYRA » depuis le logo officiel.
+   L'image n'est jamais modifiée : seul l'affichage est cadré (CSS).
+   Piloté par une seule variable de hauteur (--bh).
+   -------------------------------------------------------------------------- */
+.brand-mark {
+  --bh: 26px;
+  display: block;
+  height: var(--bh);
+  width: calc(var(--bh) * 4.77);
+  background-image: url('/nayra-logo-sm.webp');
+  background-repeat: no-repeat;
+  background-size: calc(var(--bh) * 6.4) auto;
+  background-position: calc(var(--bh) * -0.82) calc(var(--bh) * -3.43);
 }
 
 /* Accessibilité — masquer visuellement */

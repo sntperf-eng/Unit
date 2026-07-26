@@ -13,6 +13,11 @@ la performance, le SEO et les Core Web Vitals.
   superflu envoyé au client, excellents Core Web Vitals.
 - **CSS natif** avec un design system par variables (`src/styles/global.css`) —
   palette, typographie fluide (`clamp`), transitions et animations.
+- **Logo officiel NAYRA** — le fichier `public/nayra-logo.png` (or embossé sur
+  beige) est l'identité validée, **conservée telle quelle**. Des versions
+  optimisées (`.webp`) sont générées pour la performance sans jamais altérer le
+  visuel : le logo apparaît dans le hero, l'en-tête, la section finale et le
+  pied de page, et sert de base à l'image de partage (`og-image.jpg`).
 - **Polices auto-hébergées** ([Fontsource](https://fontsource.org/)) —
   _Cormorant Garamond_ (titres) & _Jost_ (texte) — aucune requête externe.
 - **Aucune dépendance runtime côté client** — les interactions (révélation au
@@ -74,7 +79,10 @@ d'avis, de questions…).
 | Ivoire / fond | `#faf6ef` |
 | Crème | `#f4ece1` |
 | Beige chaud | `#e9dcc9` |
-| Rose poudré | `#ecd7d1` |
-| Or rose | `#c9a48b` |
+| Beige du logo | `#e8d8cb` |
+| Or / bronze (accent) | `#b98f5c` |
+| Doré profond | `#a9814d` |
 | Vert sauge | `#a7b3a0` |
 | Encre (texte) | `#2c2723` |
+
+Palette accordée au logo officiel : dominante or / bronze chaud sur beige.

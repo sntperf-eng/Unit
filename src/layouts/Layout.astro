@@ -13,7 +13,7 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, brand.url).href;
-const ogImage = new URL('/og-image.png', brand.url).href;
+const ogImage = new URL('/og-image.jpg', brand.url).href;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -56,6 +56,9 @@ const productLd = {
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="manifest" href="/site.webmanifest" />
 
+    <!-- Préchargement du logo (élément LCP du hero) -->
+    <link rel="preload" as="image" href="/nayra-logo.webp" fetchpriority="high" />
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={brand.name} />
@@ -73,8 +76,6 @@ const productLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-
-    <link rel="preconnect" href="/" />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <script type="application/ld+json" set:html={JSON.stringify(productLd)} />
