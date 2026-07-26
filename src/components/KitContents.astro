@@ -9,7 +9,7 @@ import { kitItems } from '../data/site';
       <div class="kit__intro">
         <p class="eyebrow" data-reveal>Le kit NAYRA</p>
         <h2 class="section-title" data-reveal style="--reveal-delay: 60ms">
-          Un écrin complet, pensé dans le moindre détail.
+          Tout le nécessaire pour une manucure naturelle.
         </h2>
         <p class="lead" data-reveal style="--reveal-delay: 120ms">
           Douze éléments réunis avec soin pour transformer un simple geste en
@@ -27,13 +27,29 @@ import { kitItems } from '../data/site';
       </div>
     </div>
 
+    <figure class="kit__showcase" data-reveal>
+      <img
+        src="/kit-flat.webp"
+        width="1000"
+        height="601"
+        alt="L'ensemble du kit NAYRA : henné, huile cuticules, bol en silicone, pochette, guide, lime, buffer, repousse-cuticules, brossette, séparateur d'orteils et stickers."
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+
     <ul class="kit__grid">
       {kitItems.map((item, i) => (
-        <li class="kit__item" data-reveal style={`--reveal-delay: ${(i % 4) * 70}ms`}>
-          <span class="kit__icon">
-            <Icon name={item.icon} size={26} />
+        <li class="kit-card" data-reveal style={`--reveal-delay: ${(i % 3) * 70}ms`}>
+          <span class="kit-card__num">{String(i + 1).padStart(2, '0')}</span>
+          <span class="kit-card__icon">
+            <Icon name={item.icon} size={24} />
           </span>
-          <span class="kit__name">{item.name}</span>
+          <div class="kit-card__body">
+            <h3 class="kit-card__name">{item.name}</h3>
+            <p class="kit-card__label">{item.label}</p>
+            <p class="kit-card__desc">{item.desc}</p>
+          </div>
         </li>
       ))}
     </ul>
@@ -49,7 +65,7 @@ import { kitItems } from '../data/site';
     align-items: flex-end;
     justify-content: space-between;
     gap: var(--space-lg);
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-lg);
   }
   .kit__intro {
     max-width: 46ch;
@@ -79,62 +95,100 @@ import { kitItems } from '../data/site';
     color: var(--mist);
   }
 
+  /* Grande photo du kit */
+  .kit__showcase {
+    margin: 0 0 var(--space-xl);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lift);
+  }
+  .kit__showcase img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 1.2s var(--ease);
+  }
+  .kit__showcase:hover img {
+    transform: scale(1.02);
+  }
+
+  /* Grille des 12 éléments */
   .kit__grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(0.75rem, 1.5vw, 1.15rem);
   }
-  .kit__item {
+  .kit-card {
+    position: relative;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
     gap: var(--space-sm);
-    padding: var(--space-md) var(--space-sm);
+    padding: var(--space-md);
     background: var(--ivory);
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease),
       border-color 0.5s var(--ease);
   }
-  .kit__item:hover {
-    transform: translateY(-6px);
+  .kit-card:hover {
+    transform: translateY(-4px);
     box-shadow: var(--shadow-soft);
     border-color: var(--sand);
   }
-  .kit__icon {
+  .kit-card__num {
+    position: absolute;
+    top: var(--space-sm);
+    right: var(--space-sm);
+    font-family: var(--font-display);
+    font-size: var(--step-0);
+    color: var(--sand);
+  }
+  .kit-card__icon {
+    flex: none;
     display: grid;
     place-items: center;
-    width: 58px;
-    height: 58px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     color: var(--rose-gold);
     background: radial-gradient(circle at 50% 40%, #fff 0%, var(--cream) 100%);
     border: 1px solid var(--line);
-    transition: color 0.5s var(--ease), transform 0.5s var(--ease);
   }
-  .kit__item:hover .kit__icon {
-    color: var(--ink);
-    transform: scale(1.06);
+  .kit-card__body {
+    min-width: 0;
   }
-  .kit__name {
+  .kit-card__name {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-weight: 500;
+    line-height: 1.15;
+  }
+  .kit-card__label {
+    margin-top: 0.15rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rose-gold);
+  }
+  .kit-card__desc {
+    margin-top: 0.5rem;
     font-size: var(--step--1);
-    letter-spacing: 0.02em;
-    color: var(--ink);
+    line-height: 1.5;
+    color: var(--stone);
   }
 
-  @media (max-width: 780px) {
+  @media (max-width: 860px) {
     .kit__head {
       flex-direction: column;
       align-items: flex-start;
     }
     .kit__grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
   }
-  @media (max-width: 520px) {
+  @media (max-width: 540px) {
     .kit__grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr;
     }
   }
 </style>

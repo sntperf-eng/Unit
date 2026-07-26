@@ -36,21 +36,81 @@ export const manifesto = {
   signature: 'Enfin une marque pensée pour vous.',
 } as const;
 
-export type KitItem = { name: string; icon: string };
+export type KitItem = { name: string; label: string; desc: string; icon: string };
 
 export const kitItems: KitItem[] = [
-  { name: 'Henné', icon: 'leaf' },
-  { name: 'Lime', icon: 'file' },
-  { name: 'Buffer', icon: 'buffer' },
-  { name: 'Repousse-cuticules', icon: 'pusher' },
-  { name: 'Brosse', icon: 'brush' },
-  { name: 'Huile pour cuticules', icon: 'drop' },
-  { name: 'Stick de nettoyage', icon: 'stick' },
-  { name: "Séparateur d'orteils", icon: 'separator' },
-  { name: 'Stickers de protection', icon: 'sticker' },
-  { name: 'Petit bol en silicone', icon: 'bowl' },
-  { name: 'Pochette', icon: 'pouch' },
-  { name: "Guide d'utilisation", icon: 'book' },
+  {
+    name: 'Henné pour ongles',
+    label: 'Flacon style vernis · 10 ml',
+    desc: 'Coloration naturelle pour des ongles éclatants.',
+    icon: 'leaf',
+  },
+  {
+    name: 'Lime à ongles',
+    label: 'Blanche',
+    desc: 'Pour façonner et mettre en forme.',
+    icon: 'file',
+  },
+  {
+    name: 'Buffer',
+    label: 'Bloc blanc',
+    desc: "Pour lisser et préparer l'ongle.",
+    icon: 'buffer',
+  },
+  {
+    name: 'Repousse-cuticules',
+    label: 'Inox double embout',
+    desc: 'Pour des cuticules nettes et soignées.',
+    icon: 'pusher',
+  },
+  {
+    name: 'Brossette ongles',
+    label: 'Sans manche',
+    desc: 'Pour nettoyer les ongles en douceur.',
+    icon: 'brush',
+  },
+  {
+    name: 'Huile cuticules',
+    label: 'Flacon pipette ambré · 10 ml',
+    desc: 'Nourrit, hydrate et sublime.',
+    icon: 'drop',
+  },
+  {
+    name: 'Stick de nettoyage',
+    label: 'Bois',
+    desc: 'Pour nettoyer les contours avec précision.',
+    icon: 'stick',
+  },
+  {
+    name: "Séparateur d'orteils",
+    label: 'Mousse',
+    desc: 'Pour une application facile sur les pieds.',
+    icon: 'separator',
+  },
+  {
+    name: 'Stickers de protection',
+    label: 'Autocollants',
+    desc: "Protègent la peau lors de l'application.",
+    icon: 'sticker',
+  },
+  {
+    name: 'Petit bol en silicone',
+    label: 'Rose poudré',
+    desc: 'Pour mélanger le henné facilement.',
+    icon: 'bowl',
+  },
+  {
+    name: 'Pochette en coton',
+    label: 'Écru',
+    desc: 'Élégante et pratique pour ranger votre kit.',
+    icon: 'pouch',
+  },
+  {
+    name: "Guide d'utilisation",
+    label: 'Livret imprimé',
+    desc: 'Toutes les étapes expliquées pour un résultat parfait.',
+    icon: 'book',
+  },
 ];
 
 export type Benefit = { icon: string; title: string; text: string };
