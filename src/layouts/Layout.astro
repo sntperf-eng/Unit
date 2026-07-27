@@ -83,12 +83,51 @@ const productLd = {
 
   <body>
     <a href="#marque" class="visually-hidden">Aller au contenu principal</a>
+    <div class="scroll-progress" data-progress aria-hidden="true"></div>
     <slot />
 
     <script>
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ===== Titres qui surgissent — découpage mot par mot =====
+      const titles = document.querySelectorAll<HTMLElement>('.section-title');
+      titles.forEach((el) => {
+        el.removeAttribute('data-reveal'); // le masque de mots gère la révélation
+        const words = (el.innerHTML.replace(/<br\s*\/?>/gi, ' ').trim()).split(/\s+/);
+        el.innerHTML = words
+          .map((w, i) => `<span class="word-mask"><span class="w" style="--i:${i}">${w}</span></span>`)
+          .join(' ');
+        el.classList.add('js-rise');
+      });
+      if (!prefersReduced && 'IntersectionObserver' in window) {
+        const tio = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('words-in');
+                obs.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.3 }
+        );
+        titles.forEach((el) => tio.observe(el));
+      } else {
+        titles.forEach((el) => el.classList.add('words-in'));
+      }
+
+      // ===== Barre de progression de défilement =====
+      const progress = document.querySelector<HTMLElement>('[data-progress]');
+      const onProgress = () => {
+        const h = document.documentElement;
+        const max = h.scrollHeight - h.clientHeight;
+        if (progress) progress.style.width = max > 0 ? `${(h.scrollTop / max) * 100}%` : '0';
+      };
+      onProgress();
+      window.addEventListener('scroll', onProgress, { passive: true });
+
       // ===== Révélation au scroll (fade-in) =====
       const revealEls = document.querySelectorAll<HTMLElement>('[data-reveal]');
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       if (!prefersReduced && 'IntersectionObserver' in window) {
         const io = new IntersectionObserver(
