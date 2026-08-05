@@ -335,6 +335,259 @@ def render(plan, stats, errs):
                "Inès (26) — Soraya jamais le samedi.")
     return "\n".join(out)
 
+ROLE_CLASS = {"R": "rami", "Z": "zied", "M": "majdi", "ACC": "accueil",
+              "SAT": "samedi", "RAM_AM": "rami"}
+ROLE_NAME = {"R": "Dr Rami", "Z": "Dr Zied", "M": "Dr Majdi",
+             "ACC": "Accueil", "SAT": "Samedi", "RAM_AM": "Dr Rami"}
+DOMINANT = {"Laura": ("rami", "Dr Rami"), "Soraya": ("accueil", "Accueil"),
+            "Lora": ("majdi", "Dr Majdi"), "Ines": ("accueil", "Accueil"),
+            "Aytana": ("zied", "Dr Zied")}
+CONTRAT = {"Laura": "38h", "Soraya": "38h", "Lora": "34h",
+           "Ines": "30h", "Aytana": "30h"}
+
+def html_cell(a, r):
+    if r == "OFF":
+        return '<td class="c"><span class="off">Repos</span></td>'
+    cls = ROLE_CLASS[r]
+    name = ROLE_NAME[r]
+    if a == "Lora" and r != "SAT":
+        time = LORA_HOR
+    elif r == "RAM_AM":
+        time = HOR["RAM_AM"]
+    else:
+        time = HOR[r]
+    tag = ' <span class="tag">matin</span>' if r == "RAM_AM" else ""
+    return (f'<td class="c"><span class="chip {cls}">'
+            f'<span class="role">{name}{tag}</span>'
+            f'<span class="time">{time}</span></span></td>')
+
+def render_html(plan, stats, errs):
+    disp = {"Ines": "Inès"}
+    days = open_days()
+    # groupes par semaine ISO, ordonnés
+    weeks = []
+    for d in days:
+        wk = d.isocalendar()[1]
+        if not weeks or weeks[-1][0] != wk:
+            weeks.append((wk, []))
+        weeks[-1][1].append(d)
+
+    rows = []
+    for i, (wk, wdays) in enumerate(weeks, 1):
+        lo, hi = wdays[0], wdays[-1]
+        rows.append(
+            f'<tr class="wk"><td colspan="6">Semaine {i} · '
+            f'{lo.day} → {hi.day} septembre</td></tr>')
+        for d in wdays:
+            sat = " sat" if d.weekday() == 5 else ""
+            jour = JOURS_FR[d.weekday()]
+            rows.append(f'<tr class="day{sat}">')
+            rows.append(
+                f'<th scope="row" class="date"><span class="dwrap">'
+                f'<span class="d">{d.day:02d}</span>'
+                f'<span class="j">{jour[:3].lower()}.</span></span></th>')
+            for a in ["Laura", "Soraya", "Lora", "Ines", "Aytana"]:
+                rows.append(html_cell(a, plan[d][a]))
+            rows.append("</tr>")
+
+    cards = []
+    for a in ["Laura", "Soraya", "Lora", "Ines", "Aytana"]:
+        s = stats[a]
+        cls, dname = DOMINANT[a]
+        avg = hhmm(s["heures"] / 4.3)
+        stat_items = [
+            ("Jours", s["jours"]), ("Heures", hhmm(s["heures"])),
+            ("Accueil", s["acc"]), ("Rami", s["rami"]),
+            ("Zied", s["zied"]), ("Majdi", s["majdi"]), ("Samedis", s["sam"]),
+        ]
+        grid = "".join(
+            f'<div class="st"><span class="v">{v}</span>'
+            f'<span class="k">{k}</span></div>' for k, v in stat_items)
+        cards.append(f'''<article class="card {cls}">
+  <header><h3>{disp.get(a,a)}</h3>
+  <p class="sub">Contrat {CONTRAT[a]}/sem · réalisé ~{avg}/sem</p></header>
+  <div class="stats">{grid}</div>
+</article>''')
+
+    check = ("Toutes les contraintes sont respectées" if not errs
+             else f"{len(errs)} anomalie(s) — voir le fichier source")
+
+    legend = "".join(
+        f'<span class="lg {c}"><span class="dot"></span>{n}</span>'
+        for c, n in [("rami", "Dr Rami"), ("zied", "Dr Zied"),
+                     ("majdi", "Dr Majdi"), ("accueil", "Accueil"),
+                     ("samedi", "Samedi"), ("off", "Repos")])
+
+    head = ('<th class="date">Date</th>'
+            + "".join(f'<th class="{DOMINANT[a][0]}">{disp.get(a,a)}</th>'
+                      for a in ["Laura", "Soraya", "Lora", "Ines", "Aytana"]))
+
+    return f'''<title>Planning cabinet dentaire — Septembre 2026</title>
+<style>{CSS}</style>
+<main>
+  <header class="mast">
+    <p class="eyebrow">Cabinet dentaire · Assistantes</p>
+    <h1>Planning — Septembre 2026</h1>
+    <p class="lede">Cinq assistantes, du lundi au samedi. Chaque dentiste
+      présent (Rami, Zied, Majdi) a son assistante&nbsp;; une personne tient
+      l'accueil. Le Dr Emine travaille sans assistante.</p>
+    <div class="legend">{legend}</div>
+  </header>
+
+  <div class="scroll">
+    <table class="grid">
+      <thead><tr>{head}</tr></thead>
+      <tbody>
+        {''.join(rows)}
+      </tbody>
+    </table>
+  </div>
+
+  <section class="recap">
+    <h2>Récapitulatif du mois</h2>
+    <div class="cards">
+      {''.join(cards)}
+    </div>
+  </section>
+
+  <section class="notes">
+    <p class="ok"><span class="check">✓</span> {check}
+      <span class="muted">— vérifié automatiquement (couverture, binômes
+      habituels, jours OFF distincts Inès/Aytana, Soraya jamais vendredi ni
+      samedi, rotation des samedis, exception Dr Rami du 25/09).</span></p>
+    <p class="muted small">Journée = 7h36 net (créneaux 09h00-17h06, 09h30-17h36,
+      10h00-18h06). Lora : 6h48/jour (09h00-16h18). Samedi 09h30-13h30 (4h).
+      Besoin quotidien réel de 3 à 4 postes pour 5 assistantes : le temps de
+      repos excédentaire est réparti équitablement, sans dépasser aucun contrat.
+      Le contrat 38h de Soraya est ramené à ~30h24 par le congé parental du
+      vendredi.</p>
+  </section>
+</main>'''
+
+CSS = r"""
+* { box-sizing: border-box; }
+:root {
+  --bg:#f3f5f8; --surface:#ffffff; --surface-2:#f7f9fc; --border:#e2e6ee;
+  --text:#1f2733; --muted:#697386; --heading:#141b26;
+  --c-rami:#4f46e5; --c-zied:#0f766e; --c-majdi:#b45309;
+  --c-accueil:#be185d; --c-samedi:#15803d; --c-off:#94a0b3;
+  --band:#eef1f6;
+  --font:"Inter var",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:#0e131b; --surface:#161d28; --surface-2:#131a24; --border:#26303f;
+    --text:#dce3ec; --muted:#8b97a8; --heading:#f0f4f9;
+    --c-rami:#a5b4fc; --c-zied:#5eead4; --c-majdi:#fcd34d;
+    --c-accueil:#f9a8d4; --c-samedi:#86efac; --c-off:#5c6779;
+    --band:#1b2330;
+  }
+}
+:root[data-theme="light"] {
+  --bg:#f3f5f8; --surface:#ffffff; --surface-2:#f7f9fc; --border:#e2e6ee;
+  --text:#1f2733; --muted:#697386; --heading:#141b26;
+  --c-rami:#4f46e5; --c-zied:#0f766e; --c-majdi:#b45309;
+  --c-accueil:#be185d; --c-samedi:#15803d; --c-off:#94a0b3; --band:#eef1f6;
+}
+:root[data-theme="dark"] {
+  --bg:#0e131b; --surface:#161d28; --surface-2:#131a24; --border:#26303f;
+  --text:#dce3ec; --muted:#8b97a8; --heading:#f0f4f9;
+  --c-rami:#a5b4fc; --c-zied:#5eead4; --c-majdi:#fcd34d;
+  --c-accueil:#f9a8d4; --c-samedi:#86efac; --c-off:#5c6779; --band:#1b2330;
+}
+body { margin:0; background:var(--bg); color:var(--text);
+  font-family:var(--font); line-height:1.5;
+  -webkit-font-smoothing:antialiased; }
+main { max-width:1120px; margin:0 auto; padding:clamp(20px,4vw,52px) clamp(16px,3vw,32px) 64px; }
+
+.mast { margin-bottom:28px; }
+.eyebrow { text-transform:uppercase; letter-spacing:.14em; font-size:.72rem;
+  font-weight:600; color:var(--c-rami); margin:0 0 10px; }
+h1 { font-family:var(--serif); font-weight:600; letter-spacing:-.01em;
+  font-size:clamp(1.9rem,4.5vw,3rem); line-height:1.05; margin:0 0 12px;
+  color:var(--heading); text-wrap:balance; }
+.lede { max-width:62ch; color:var(--muted); font-size:1.02rem; margin:0 0 22px; }
+
+.legend { display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; }
+.lg { display:inline-flex; align-items:center; gap:7px; font-size:.82rem;
+  color:var(--muted); font-weight:500; }
+.lg .dot { width:11px; height:11px; border-radius:3px;
+  background:color-mix(in srgb, var(--role) 22%, var(--surface));
+  border-left:3px solid var(--role); }
+.lg.rami{--role:var(--c-rami)} .lg.zied{--role:var(--c-zied)}
+.lg.majdi{--role:var(--c-majdi)} .lg.accueil{--role:var(--c-accueil)}
+.lg.samedi{--role:var(--c-samedi)} .lg.off{--role:var(--c-off)}
+
+.scroll { overflow-x:auto; border:1px solid var(--border); border-radius:14px;
+  background:var(--surface); box-shadow:0 1px 2px rgba(20,27,38,.04); }
+table.grid { border-collapse:collapse; width:100%; min-width:720px; }
+.grid thead th { position:sticky; top:0; z-index:3; background:var(--surface);
+  text-align:left; font-size:.82rem; font-weight:600; color:var(--heading);
+  padding:14px 12px; border-bottom:1px solid var(--border);
+  box-shadow:inset 0 -2px 0 color-mix(in srgb, var(--role,transparent) 55%, transparent); }
+.grid thead th.rami{--role:var(--c-rami)} .grid thead th.zied{--role:var(--c-zied)}
+.grid thead th.majdi{--role:var(--c-majdi)} .grid thead th.accueil{--role:var(--c-accueil)}
+.grid thead th.date{ box-shadow:none; }
+
+.grid th.date { width:64px; }
+.grid tr.wk td { background:var(--band); color:var(--muted);
+  font-size:.74rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+  padding:8px 14px; border-bottom:1px solid var(--border); }
+.grid tbody, .grid tr { border:0; }
+.grid td, .grid th.date { padding:7px 10px; border-bottom:1px solid var(--border);
+  vertical-align:middle; }
+.grid tr.day:hover td, .grid tr.day:hover th.date { background:var(--surface-2); }
+.grid th.date { position:sticky; left:0; z-index:2; background:var(--surface); }
+.grid tr.wk td { z-index:1; }
+.dwrap { display:flex; align-items:baseline; gap:6px; }
+.grid tr.day:hover th.date { background:var(--surface-2); }
+.date .d { font-size:1.05rem; font-weight:700; color:var(--heading);
+  font-variant-numeric:tabular-nums; }
+.date .j { font-size:.72rem; color:var(--muted); }
+tr.sat th.date .d { color:var(--c-samedi); }
+
+.chip { display:flex; flex-direction:column; gap:1px; padding:6px 9px;
+  border-radius:8px; border-left:3px solid var(--role);
+  background:color-mix(in srgb, var(--role) 12%, var(--surface));
+  min-width:104px; }
+.chip.rami{--role:var(--c-rami)} .chip.zied{--role:var(--c-zied)}
+.chip.majdi{--role:var(--c-majdi)} .chip.accueil{--role:var(--c-accueil)}
+.chip.samedi{--role:var(--c-samedi)}
+.chip .role { font-size:.83rem; font-weight:600; color:var(--role); }
+.chip .time { font-size:.72rem; color:var(--muted); font-variant-numeric:tabular-nums; }
+.chip .tag { font-size:.62rem; font-weight:600; text-transform:uppercase;
+  letter-spacing:.05em; color:var(--muted); }
+.off { font-size:.78rem; color:var(--c-off); font-style:italic; padding-left:3px; }
+
+.recap { margin-top:40px; }
+.recap h2, .notes h2 { font-family:var(--serif); font-weight:600;
+  font-size:1.5rem; color:var(--heading); margin:0 0 18px; }
+.cards { display:grid; gap:14px;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); }
+.card { background:var(--surface); border:1px solid var(--border);
+  border-radius:14px; padding:16px 16px 14px; border-top:3px solid var(--role); }
+.card.rami{--role:var(--c-rami)} .card.zied{--role:var(--c-zied)}
+.card.majdi{--role:var(--c-majdi)} .card.accueil{--role:var(--c-accueil)}
+.card h3 { margin:0; font-size:1.15rem; color:var(--heading); }
+.card .sub { margin:3px 0 12px; font-size:.76rem; color:var(--muted); }
+.card .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:9px 6px; }
+.st { display:flex; flex-direction:column; }
+.st .v { font-size:1.05rem; font-weight:700; color:var(--text);
+  font-variant-numeric:tabular-nums; line-height:1.1; }
+.st .k { font-size:.64rem; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--muted); }
+
+.notes { margin-top:36px; display:flex; flex-direction:column; gap:10px; }
+.ok { font-size:.95rem; margin:0; }
+.check { display:inline-grid; place-items:center; width:20px; height:20px;
+  border-radius:50%; background:color-mix(in srgb,var(--c-samedi) 20%,transparent);
+  color:var(--c-samedi); font-weight:700; font-size:.8rem; margin-right:6px;
+  vertical-align:-2px; }
+.muted { color:var(--muted); } .small { font-size:.82rem; line-height:1.55; }
+@media (prefers-reduced-motion:reduce){ *{scroll-behavior:auto} }
+"""
+
 if __name__ == "__main__":
     plan = build()
     errs = verify(plan)
@@ -342,6 +595,8 @@ if __name__ == "__main__":
     md = render(plan, stats, errs)
     with open("planning-septembre-2026.md", "w") as f:
         f.write(md + "\n")
+    with open("planning-septembre-2026.html", "w") as f:
+        f.write(render_html(plan, stats, errs) + "\n")
     print("ERREURS:", errs if errs else "aucune")
     print("--- STATS ---")
     for a in ASSISTANTS:
